@@ -57,59 +57,78 @@ class PhasesController extends Controller
     public function statsAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
         $utilisateur = $this->container->get('security.context')->getToken()->getUser();
         $graphs = array();
+        $labels = array();
+        $all_exos = array();
 
-        if ($request->getSession()->get('role') != 'patient') {
-            $patient = $em->getRepository(Patient::class)->findOneBy(['utilisateur' => $utilisateur]);
-            $parties = $em->getRepository(Partie::class)->findBy(['patient' => $patient]);
+        //$patient = $em->getRepository(Patient::class)->findOneBy(['utilisateur' => $utilisateur]);
 
-            $query = $em->getRepository(Exercice::class)->createQueryBuilder('n');
-            $exos = $query->where($query->expr()->in('n.partie', ':parties'))->setParameter('parties', $parties)->getQuery()->getResult();
+        if ($request->getSession()->get('role') == 'medecin') {
+            $patients = $em->getRepository(Patient::class)->findAll();
+            $exos =  $em->getRepository(Exercice::class)->findAll();
 
-            // Generation du tableau pour le graphe //
-            $graph = [];
-            foreach ($exos as $exo) {
-                $time = $exo->getDateCreation()->getTimestamp();
-                if($exo->getNbQuestionValidee() == 0)
-                    continue;
-                if(!array_key_exists($time, $graph)) {
-                    $graph[$time] = [$exo->getNbBonneReponse() / $exo->getNbQuestionValidee()];
-                } else {
-                    array_push($graph[$time], $exo->getNbBonneReponse() / $exo->getNbQuestionValidee());
-                }
+            foreach($exos as $exo){
+                $labels[$exo->getDateCreation()->getTimestamp()] = '-';
             }
-            $graph = array_map(function($o) {return array_sum($o) / count($o);}, $graph);
-           $graphs[$utilisateur] = $graph;
-        }
-        elseif($request->getSession()->get('role') != 'medecin'){
-            $patient = $em->getRepository(Patient::class)->findOneBy(['utilisateur' => $utilisateur]);
-            $parties = $em->getRepository(Partie::class)->findBy(['patient' => $patient]);
 
-            $query = $em->getRepository(Exercice::class)->createQueryBuilder('n');
-            $exos = $query->where($query->expr()->in('n.partie', ':parties'))->setParameter('parties', $parties)->getQuery()->getResult();
+            foreach($patients as $patient) {
+                $parties = $em->getRepository(Partie::class)->findBy(['patient' => $patient]);
 
-            // Generation du tableau pour le graphe //
-            $graph = [];
-            foreach ($exos as $exo) {
-                $time = $exo->getDateCreation()->getTimestamp();
-                if($exo->getNbQuestionValidee() == 0)
-                    continue;
-                if(!array_key_exists($time, $graph)) {
-                    $graph[$time] = [$exo->getNbBonneReponse() / $exo->getNbQuestionValidee()];
-                } else {
-                    array_push($graph[$time], $exo->getNbBonneReponse() / $exo->getNbQuestionValidee());
+                $query = $em->getRepository(Exercice::class)->createQueryBuilder('n');
+                $exos = $query->where($query->expr()->in('n.partie', ':parties'))->setParameter('parties', $parties)->getQuery()->getResult();
+
+
+                // Generation du tableau pour le graphe //
+                $graph = array();
+                foreach($labels as $k=>$v)
+                    $graph[$k]=array();
+                foreach ($exos as $exo) {
+                    $time = $exo->getDateCreation()->getTimestamp();
+                    array_push($graph[$time], ($exo->getNbBonneReponse() / ($exo->getNbQuestionValidee()!=0?$exo->getNbQuestionValidee():1))*100);
                 }
+                $graph = array_map(function ($o) {
+                    return array_sum($o) / (count($o)==0?1:count($o));
+                }, $graph);
+                $graphs[$patient->getUtilisateur()->getPrenom()." ".$patient->getUtilisateur()->getNom()] = $graph;
+                $all_exos[$patient->getUtilisateur()->getPrenom()." ".$patient->getUtilisateur()->getNom()] = $exos;
             }
-            $graph = array_map(function($o) {return array_sum($o) / count($o);}, $graph);
-            $graphs[$patient->getUtilisateur()->getNom()] = $graph;
+        }
+        else{
+            $exos =  $em->getRepository(Exercice::class)->findAll();
+
+            foreach($exos as $exo){
+                $labels[$exo->getDateCreation()->getTimestamp()] = '-';
+            }
+                $patient = $em->getRepository(Patient::class)->findOneBy(['utilisateur' => $utilisateur]);
+
+                $parties = $em->getRepository(Partie::class)->findBy(['patient' => $patient]);
+
+                $query = $em->getRepository(Exercice::class)->createQueryBuilder('n');
+                $exos = $query->where($query->expr()->in('n.partie', ':parties'))->setParameter('parties', $parties)->getQuery()->getResult();
+
+
+                // Generation du tableau pour le graphe //
+                $graph = array();
+                foreach($labels as $k=>$v)
+                    $graph[$k]=array();
+                foreach ($exos as $exo) {
+                    $time = $exo->getDateCreation()->getTimestamp();
+                    array_push($graph[$time], ($exo->getNbBonneReponse() / ($exo->getNbQuestionValidee()!=0?$exo->getNbQuestionValidee():1))*100);
+                }
+                $graph = array_map(function ($o) {
+                    return array_sum($o) / (count($o)==0?1:count($o));
+                }, $graph);
+                $graphs[$patient->getUtilisateur()->getPrenom()." ".$patient->getUtilisateur()->getNom()] = $graph;
+                $all_exos[$patient->getUtilisateur()->getPrenom()." ".$patient->getUtilisateur()->getNom()] = $exos;
+
         }
 
-        print_r($graphs);
+        //print_r($all_exos);
         return $this->render('UPONDOrthophonieBundle:Stats:stats.html.twig', 
-            ['exercices' => $exos,
-             'graph' => $graphs]);
+            ['exercices' => $all_exos,
+             'graph' => $graphs,
+             'labels' => $labels]);
     }
 
     /**
