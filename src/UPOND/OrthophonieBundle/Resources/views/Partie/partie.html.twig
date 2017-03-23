@@ -1,0 +1,41 @@
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Démarrer une partie {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+
+    <div class="container">
+        <div name="intitule">
+            <h1>Création d'une partie</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-8 col-md-offset-2">
+                <p> Lorsque vous créer une partie, on va vous attribuer de façon aléatoire des questions à chaque exercice pour chaque phase et pour chaque stratégie.</p>
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_errors(form) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.Patient, { 'label': "Choisir un patient:" }) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_row(form.TempsEntrainement, { 'label': "Temps imparti pour la phase d'entrainement:" }) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_row(form.TempsTransfert, { 'label': "Temps imparti pour la phase de transfert:" }) }}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    <p></p>
+
+    <p></p>
+
+{% endblock %}

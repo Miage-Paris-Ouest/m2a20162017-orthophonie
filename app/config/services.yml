@@ -1,0 +1,14 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    app.form.registration:
+        class: UPOND\UserBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: upond_user_registration }
+    app.form.profile:
+            class: UPOND\UserBundle\Form\Type\ProfileFormType
+            tags:
+                - { name: form.type, alias: upond_user_profile }

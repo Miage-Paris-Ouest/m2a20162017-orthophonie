@@ -1,0 +1,17 @@
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Phase d'apprentissage - {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+    <h2>Veuillez choisir une phase</h2>
+
+    <a href="{{ path('upond_orthophonie_exercice') }}" class="btn btn-info" role="button">Phase d'apprentissage</a>
+
+    <a href="{{ path('upond_orthophonie_exercice') }}" class="btn btn-success" role="button">Phase d'entrainement</a>
+
+    <a href="{{ path('upond_orthophonie_exercice') }}" class="btn btn-warning" role="button">Phase de transfert</a>
+
+{% endblock %}

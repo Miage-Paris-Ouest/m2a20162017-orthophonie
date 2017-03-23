@@ -1,0 +1,16 @@
+
+
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Gestion des exercices
+{% endblock %}
+
+{% block orthophonie_body %}
+    <h3>Modifier un exercice:</h3>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}

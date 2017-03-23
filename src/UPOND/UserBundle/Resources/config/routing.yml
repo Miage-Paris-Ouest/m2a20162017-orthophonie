@@ -1,0 +1,3 @@
+upond_user_home:
+    path:     /
+    defaults: { _controller: @UPONDUserBundle:Profile:edit }

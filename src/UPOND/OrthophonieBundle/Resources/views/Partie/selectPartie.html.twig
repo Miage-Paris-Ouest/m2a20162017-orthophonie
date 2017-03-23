@@ -1,0 +1,19 @@
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Sélectionner la partie {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+    <h2>Sélectionner la partie:</h2>
+
+
+    {{ form_start(form,{  'attr': {'class' : 'form-control' }  }) }}
+    {{ form_errors(form)}}
+
+
+    {{ form_row(form.Partie, {'attr': {'class' : 'form-control' } }) }}
+
+    {{ form_end(form) }}
+{% endblock %}

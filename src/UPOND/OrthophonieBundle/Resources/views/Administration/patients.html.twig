@@ -1,0 +1,128 @@
+
+
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Statistique - {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+<div name="intitule">
+    <h1>Gestion des patients</h1>
+    <p>Les utilisateurs sont considérés commes des patients.</p>
+</div>
+<div class="container">
+    <div class="PatientNotAffected col-sm-12 col-md-6">
+        <h3>Liste des Utilisateurs</h3>
+        <table class='table table-striped'>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Login</th>
+            <th>Médecin</th>
+            <th>Action</th>
+            {% for patient in listPatients %}
+                <tr>
+                    <td>
+                        {{ patient.utilisateur.getId }}
+                    </td>
+                    <td>
+                        {{ patient.utilisateur.getNom }}
+                    </td>
+                    <td>
+                        {{ patient.utilisateur.getPrenom }}
+                    </td>
+                    <td>
+                        {{ patient.utilisateur.getEmail }}
+                    </td>
+                    <td>
+                        {{ patient.utilisateur.getUsername }}
+                    </td>
+                    <td>
+                        <select name="ListMedecins" idPatient="{{ patient.getIdPatient }}" >
+                            {% for medecin in ListMedecins %}
+                                <option value="{{ medecin.getIdMedecin }}" idPatient="{{ patient.getIdPatient }}">
+                                    {{ medecin.utilisateur.getPrenom }} {{ medecin.utilisateur.getNom }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ path('upond_orthophonie_administration_patient') }}">
+                            <input type="text" name='idPatient' style="display:none" value="{{ patient.getIdPatient }}"/>
+                            <input type="text" name='idMedecin' style="display:none" idPatient="{{ patient.getIdPatient }}" value=""/>
+                            <input type="submit" class="btn btn-success" value="Affecter"/>
+                        </form>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="PatientAffectedByMedecin col-sm-12 col-md-6" >
+
+        <h3>Mes patients</h3>
+
+        <table class='table table-striped'>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Login</th>
+            <th>Action</th>
+
+            {% for patient in ListMyPatient %}
+                <tr>
+                    <td>
+                        {{ patient.utilisateur.getId }}
+                    </td>
+                    <td>
+                        {{ patient.utilisateur.getNom }}
+                    </td>
+                    <td>
+                        {{ patient.utilisateur.getPrenom }}
+                    </td>
+                    <td>
+                        {{ patient.utilisateur.getEmail }}
+                    </td>
+                    <td>
+                        {{ patient.utilisateur.getUsername }}
+                    </td>
+                    <td>
+                        <form method="post" action="{{ path('upond_orthophonie_administration_patient_retire') }}">
+                            <input type="text" name='idPatient' style="display:none" value="{{ patient.getIdPatient }}"/>
+                            <input type="submit" class="btn btn-warning" value="Retirer"/>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascripts_complement %}
+
+  <script>
+    $( document ).ready(function() {
+        $('[name="ListMedecins"]').each(function () {
+            idMedecin = $(this).val();
+            idPatient = $(this).attr("idPatient");
+            $('[name=idMedecin][idpatient='+idPatient+']').val(idMedecin);
+        });
+
+        $('[name="ListMedecins"]').change(function () {
+            idMedecin = $(this).val();
+            idPatient = $(this).attr("idPatient");
+            $('[name=idMedecin][idpatient='+idPatient+']').val(idMedecin);
+        });
+    });
+
+
+   </script>
+{% endblock %}

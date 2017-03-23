@@ -1,0 +1,11 @@
+services:
+#    upond_orthophonie.example:
+#        class: UPOND\OrthophonieBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+    upond.orthophonie.menu.voter.request:
+        class: UPOND\OrthophonieBundle\Menu\RequestVoter
+        arguments:
+            - @service_container
+        tags:
+            - { name: knp_menu.voter }
+

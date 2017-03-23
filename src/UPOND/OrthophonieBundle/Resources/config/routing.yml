@@ -1,0 +1,104 @@
+upond_orthophonie_home:
+    path:     /
+    defaults: { _controller: UPONDOrthophonieBundle:Phases:index }
+
+upond_orthophonie_invite:
+    path:     /
+    defaults: { _controller: UPONDOrthophonieBundle:Invite:accueil }
+
+upond_orthophonie_createExercice:
+    path:     /select_partie/{phase}/{niveau}/{strategie}
+    defaults: { _controller: UPONDOrthophonieBundle:Exercice:selectPartie }
+
+upond_orthophonie_stats:
+    path:     /stats
+    defaults: { _controller: UPONDOrthophonieBundle:Phases:stats }
+
+upond_orthophonie_phases:
+    path:     /phases
+    defaults: { _controller: UPONDOrthophonieBundle:Phases:phases }
+
+upond_orthophonie_exercice:
+    path:     /exercice
+    defaults: { _controller: UPONDOrthophonieBundle:Exercice:afficherExercice }
+
+upond_orthophonie_start:
+    path:     /start
+    defaults: { _controller: UPONDOrthophonieBundle:Partie:start }
+
+upond_orthophonie_stats:
+    path:      /statistiques
+    defaults:  { _controller: UPONDOrthophonieBundle:Statistique:statistique }
+
+upond_orthophonie_administration_patient:
+    path:      /patients
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:patients }
+
+upond_orthophonie_administration_patient_retire:
+    path:      /retire_patients
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:patientsRetire }
+
+upond_orthophonie_administration_medecin:
+    path:      /medecins
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:medecins }
+
+upond_orthophonie_administration_exercice:
+    path:      /exercices
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercices }
+
+upond_orthophonie_multimedia:
+    path:      /Banque_images_et_sons
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercices }
+
+upond_orthophonie_administration_medecin_ajout:
+    path:      /ajout_medecin
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:medecinsAjout }
+
+upond_orthophonie_administration_medecin_retirer:
+    path:      /retirer_medecin
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:medecinsRetirer }
+
+upond_orthophonie_administration_exercice_ajouter:
+    path:      /ajouter_exercice
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesAjouter }
+
+upond_orthophonie_administration_exercice_modifier:
+    path:      /modifier_exercice
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesModifier }
+
+upond_orthophonie_administration_exercice_supprimer:
+    path:      /supprimer_exercice
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesSupprimer }
+
+upond_orthophonie_administration_exercice_form:
+    path:      /form_exercice
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exerciceForm }
+
+upond_orthophonie_administration_exercice_update_form:
+    path:      /update_form_exercice
+    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exerciceUpdateForm }
+
+upond_orthophonie_administration_ressources_manager_images:
+    path:      /manage_images
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:imagesEdit }
+
+upond_orthophonie_administration_ressources_manager_images_update_simple:
+    path:      /manage_images_update_simple
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:imagesEditUpdateSimple }
+
+upond_orthophonie_administration_ressources_manager_images_creation:
+    path:      /manage_images_creation
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:imagesCreate }
+
+upond_orthophonie_administration_ressources_manager_images_creation_do:
+    path:      /manage_images_creation_do
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:imagesCreateDo }
+
+upond_orthophonie_administration_ressources_manager_images_update:
+    path:      /manage_images_update
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:imagesUpdate }
+
+upond_orthophonie_administration_ressources_manager_images_update_do:
+    path:      /manage_images_update_do
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:imagesUpdateDo }
+

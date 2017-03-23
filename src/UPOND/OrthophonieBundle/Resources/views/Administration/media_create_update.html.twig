@@ -1,0 +1,130 @@
+
+
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Création/Modification médias - {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+<div name="intitule">
+    <h1>Ajout d'une ressource multimédia</h1>
+</div>
+    <div class="container">
+        <div class="row">
+            <form method="POST" action="{{ path(action_path)}}" class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" enctype="multipart/form-data" >
+
+                {% if success_message is defined %}
+                    <div class="alert alert-success" role="alert">{{ success_message }}</div>
+                {% endif %}
+
+
+
+                <h3>Strategie</h3>
+                <select class="form-control" name="strategie">
+                    {% for strat in strategies_opt %}
+                        {% if (obj_multimedia is defined) and (obj_multimedia.getStrategie.getIdStrategie == strat.getIdStrategie) %}
+                            <option value="{{ strat.getIdStrategie }}" selected>{{ strat.getNom }}</option>
+                        {% else %}
+                            <option value="{{ strat.getIdStrategie }}" >{{ strat.getNom }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+
+                <hr>
+
+                <h3>Image</h3>
+                <!-- image-preview-filename input [CUT FROM HERE]-->
+
+                {% if action == 'Update' %}
+                    <input type="hidden" name="media_id" value="{{ obj_multimedia.getIdMultimedia }}">
+                {% endif %}
+
+
+                <input type="file" id="files" name="img" onchange="readImg(this);" />
+                {% if erreur_img is defined %}
+                    <div class="alert alert-danger" role="alert">{{ erreur_img }}</div>
+                {% endif %}
+
+
+                {% if action == 'Update' %}
+                    <img src="{{ asset(obj_multimedia.getImage) }}" width="200" id="imgpreview" class="img-responsive"/>
+                {% else %}
+                    <img src="#" width="200" id="imgpreview" class="img-responsive" style="display: none"/>
+                {% endif %}
+
+
+                <hr>
+
+                <h3>Son</h3>
+                <input type="file" id="files" onchange="readAudio(this);" name="audio"/>
+
+                {% if action == 'Update' %}
+                <audio controls>
+                    <source id="audiopreview" src="{{ asset(obj_multimedia.getSon) }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                {% endif %}
+
+                {% if erreur_audio is defined %}
+                    <div class="alert alert-danger" role="alert">{{ erreur_audio }}</div>
+                {% endif %}
+
+
+
+                <hr>
+                <h3>Nom</h3>
+                {% if action == 'Update' %}
+                    <input type="text" class="form-control" name="nom" value="{{ obj_multimedia.getNom }}" placeholder="Texte..." required>
+                {% else %}
+                    <input type="text" class="form-control" name="nom" placeholder="Texte..." required>
+                {% endif %}
+                <input type="submit" class="btn btn-success" value="Enregistrer">
+
+            </form>
+        </div>
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block javascripts_complement %}
+
+  <script>
+      function handleFileSelect(evt) {
+          var files = evt.target.files; // FileList object
+
+          // files is a FileList of File objects. List some properties.
+          var output = [];
+          for (var i = 0, f; f = files[i]; i++) {
+              output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                      f.size, ' bytes, last modified: ',
+                      f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                      '</li>');
+          }
+          document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+      }
+
+      document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+      function readImg(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                  $('#imgpreview').attr('src', e.target.result);
+              }
+              $('#imgpreview').show();
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+      function readAudio(input) {
+          /*if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                  $('#audiopreview').attr('src', e.target.result);
+              }
+              reader.readAsDataURL(input.files[0]);
+          }*/
+      }
+   </script>
+{% endblock %}

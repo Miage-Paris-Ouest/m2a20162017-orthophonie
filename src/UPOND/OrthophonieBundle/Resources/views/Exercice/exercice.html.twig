@@ -1,0 +1,140 @@
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Exercice {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+    <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (exercice.getEtapeCourante().numEtape / 13 * 100)|number_format(0) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ (exercice.getEtapeCourante().numEtape / 13 * 100)|number_format(0) }}%"></div>
+        <div class="text-right" style="margin-right: 15px;">Question {{ exercice.getEtapeCourante().numEtape }} / 13</div>
+    </div>
+
+    {% if TypeAffichage == "Exercice" or TypeAffichage == "Nom" %}
+        <h2>Exercice </h2>
+        <div class="row">
+
+
+            {% for multimedia in multimedias %}
+                <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                    <div class="well profile_view">
+                        <div class="col-sm-12 text-center">
+                            <img src="{{ asset(multimedia.getImage) }}" alt="" class="img-thumbnail img-responsive">
+                        </div>
+                        <div class="col-xs-12 bottom text-center">
+                            <div class="col-xs-12 col-sm-12 emphasis">
+                               <h2>
+                                   {% if TypeAffichage == "Nom" %}
+                                       {{ multimedia.getNom }}
+                                   {% else %}
+                                       Quel est le nom de cette personne ?
+                                   {% endif %}
+                               </h2>
+                            </div>
+                        </div>
+
+                        {% if TypeAffichage == "Nom" %}
+                            {% if afficherSon == true %}
+                                <div class="col-xs-12 bottom text-center">
+                                    <div class="col-xs-12 col-sm-12 emphasis">
+                                        <audio controls style="width: 100%">
+                                            <source src="{{ asset(multimedia.getSon) }}" type="audio/mpeg">
+                                                    Votre navigateur internet ne supporte pas l'élément audio.
+                                        </audio>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <br />
+        <br />
+        {% if TypeAffichage == "Exercice" %}
+            <p>La réponse du patient est-elle correcte?</p>
+        {% endif %}
+        <br />
+        <div class="container-fluid">
+            <div class="row">
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                {% if TypeAffichage == "Nom" %}
+                    <div class="col-sm-2"style="float: left;padding-bottom: 20px">{{ form_row(form.MauvaiseReponse, { 'label': 'Précédent' }) }}</div>
+                    <div class="col-sm-2"style="float: right;padding-bottom: 20px"> {{ form_row(form.BonneReponse, { 'label': 'Suivant' }) }} </div>
+                {% else %}
+                    <div class="col-sm-2"style="float: left;padding-bottom: 20px">{{ form_row(form.MauvaiseReponse, { 'label': 'Mauvaise réponse' }) }}</div>
+                    <div class="col-sm-2" style="float: right;padding-bottom: 20px">{{ form_row(form.BonneReponse, { 'label': 'Bonne réponse' }) }}</div>
+                {% endif %}
+                {{ form_end(form) }}
+
+                {% if TypeAffichage == "Exercice" %}
+                    {% if exercice.getTempsExercice is not null %}
+                        <div id="countdown"></div>
+                    {% endif %}
+
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p><b>Pause vidéo </b></p>
+        {% if PauseVideo is defined %}
+            <iframe width="560" height="315" src="{{ PauseVideo.getURL }}"  frameborder="0" allowfullscreen></iframe>
+
+                <div id="countdown">
+
+                </div>
+
+        {% endif %}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="container-fluid hidden">
+            <div class="row">
+                    <div class="col-sm-2"style="float: left;padding-bottom: 20px">{{ form_row(form.MauvaiseReponse, { 'label': 'Mauvaise réponse' }) }}</div>
+                    <div class="col-sm-2"style="float: right;padding-bottom: 20px">{{ form_row(form.BonneReponse, { 'label': 'Suivant' }) }}</div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+
+    {% endif %}
+
+
+{% endblock %}
+
+
+
+{% block javascripts_complement %}
+
+    <script>(function(window, location) {
+            history.replaceState(null, document.title, location.pathname+"#!/history");
+            history.pushState(null, document.title, location.pathname);
+
+            window.addEventListener("popstate", function() {
+                if(location.hash === "#!/history") {
+                    history.replaceState(null, document.title, location.pathname);
+                    setTimeout(function(){
+                        location.replace("{{ path('upond_orthophonie_home') }}");
+                    },0);
+                }
+            }, false);
+        }(window, location));</script>
+
+    <script type="text/javascript" charset="utf-8">
+        var countdown =  $("#countdown").countdown360({
+            radius      : 60,
+            seconds     : {% if TypeAffichage == "Exercice" %} {{ exercice.getTempsExercice }} {% endif %} {% if TypeAffichage == "PauseVideo" %} {{ PauseVideo.getDuree + 10 }} {% endif %},
+            fontColor   : '#FFFFFF',
+            autostart   : false,
+            onComplete  : function () { {% if TypeAffichage == "Exercice" %} $('#form_MauvaiseReponse').click(); {% endif %} {% if TypeAffichage == "PauseVideo" %} $('#form_BonneReponse').click(); {% endif %} }
+        });
+        countdown.start();
+        console.log('countdown360 ',countdown);
+    </script>
+
+
+
+{% endblock %}

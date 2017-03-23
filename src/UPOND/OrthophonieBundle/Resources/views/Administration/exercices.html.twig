@@ -1,0 +1,61 @@
+
+
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Gestion des exercices
+{% endblock %}
+
+{% block orthophonie_body %}
+    <div name="intitule">
+        <h1>Gestion des Exercices</h1>
+    </div>
+
+    <div class="container">
+        <h3>Ajouter un nouvel exercice:</h3>
+        <form method="post" action="{{ path('upond_orthophonie_administration_exercice_ajouter') }}">
+            <input type="submit" class="btn btn-success" value="Ajouter"/>
+        </form>
+        <h3>Liste des exercices:</h3>
+        <table class='table table-striped'>
+            <th>Identifiant</th>
+            <th>Nom</th>
+            <th>Stratégie</th>
+            <th>Image</th>
+            <th>Son</th>
+            <th>Action</th>
+            {% for multimedia in listMultimedias %}
+                <tr>
+                    <td>
+                        {{ multimedia.getIdMultimedia }}
+                    </td>
+                    <td>
+                        {{ multimedia.getNom }}
+                    </td>
+                    <td>
+                        {{ multimedia.strategie.getNom }}
+                    </td>
+                    <td>
+                        {{ multimedia.getImage }}
+                    </td>
+                    <td>
+                        {{ multimedia.getSon }}
+                    </td>
+                    <td>
+                        <form method="post" action="{{ path('upond_orthophonie_administration_exercice_modifier') }}">
+                            <input type="text" name='idMultimedia' style="display:none" value="{{ multimedia.getIdMultimedia }}"/>
+                            <input type="submit" class="btn btn-primary" value="Modifier"/>
+                        </form>
+
+                        <form method="post" action="{{ path('upond_orthophonie_administration_exercice_supprimer') }}">
+                            <input type="text" name='idMultimedia' style="display:none" value="{{ multimedia.getIdMultimedia }}"/>
+                            <input type="submit" class="btn btn-danger" value="Supprimer"/>
+                        </form>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Exercice - {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+    <h2>Exercice:</h2>
+
+    <p><b>
+        {{ question.getTexteQuestion }}
+        </b></p>
+
+    <img src="{{ asset(multimedia.getImagePath) }}" width='400'alt="" />
+    <p></p>
+    <audio controls>
+        <source src="{{ asset(multimedia.getSonPath) }}" type="audio/mpeg">
+        Votre navigateur internet ne supporte pas l'élément audio.
+    </audio>
+
+    <br />
+    <br />
+    <p>La réponse du patient est-elle correcte?</p>
+    <br />
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.BonneReponse, { 'label': 'Bonne réponse' }) }}
+    {{ form_row(form.MauvaiseReponse, { 'label': 'Mauvaise réponse' }) }}
+    {{ form_end(form) }}
+
+    {% for flashMessage in app.session.flashbag.get('reponse') %}
+
+        {{ flashMessage }}
+
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,83 @@
+
+
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Gestion multimédias - {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+<div name="intitule">
+    <h1>Gestion des ressources multimédias</h1>
+</div>
+
+    <h3>Liste des images</h3>
+    <form action="{{ path('upond_orthophonie_administration_ressources_manager_images_update_simple')}}" method="POST" class="Multimedias">
+        <div class="row">
+            <div class="col-sm-4 col-md-4 col-lg-4">
+                <ul class="pagination">
+                    <li><a href="{{ path('upond_orthophonie_administration_ressources_manager_images')}}?page={{ page-1 }}"><i class="fa fa-caret-left"></i> Page Précédent</a></li>
+                    <li><a href="{{ path('upond_orthophonie_administration_ressources_manager_images')}}?page={{ page+1 }}"> Page Suivant <i class="fa fa-caret-right"></i></a></li>
+                </ul>
+            </div>
+
+            <div class="col-sm-4 col-md-4 col-lg-4">
+                <input type="submit" name="validate" value="Enregister" class="btn btn-success">
+            </div>
+
+        </div>
+    <table class='table table-striped container'>
+        <tr>
+            <th>Image</th>
+            <th>Son</th>
+            <th>Texte</th>
+            <th>Action</th>
+        </tr>
+
+        {% for multimedia in listMultimedias %}
+            <tr>
+                <td>
+                    <img src="{{ asset(multimedia.getImage) }}" width="300px" class="img-thumbnail "/>
+                    <input class="" type="hidden" name="image[]" value="{{ multimedia.getIDMultimedia }}">
+                </td>
+                <td>
+                    <audio controls>
+                        <source src="{{ asset(multimedia.getSon) }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <input class="" type="hidden" name="son[]" value="{{ multimedia.getIDMultimedia }}">
+                </td>
+                <td>
+                    <input class="" type="text" name="text[]" value="{{ multimedia.getNom }}">
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('upond_orthophonie_administration_ressources_manager_images_update')}}?media_id={{ multimedia.getIDMultimedia }}"><i class="fa fa-edit"></i></a>
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+</form>
+{% endblock %}
+
+{% block javascripts_complement %}
+
+  <script>
+    $( document ).ready(function() {
+        $('[name="ListMedecins"]').each(function () {
+            idMedecin = $(this).val();
+            idPatient = $(this).attr("idPatient");
+            $('[name=idMedecin][idpatient='+idPatient+']').val(idMedecin);
+        });
+
+        $('[name="ListMedecins"]').change(function () {
+            idMedecin = $(this).val();
+            idPatient = $(this).attr("idPatient");
+            $('[name=idMedecin][idpatient='+idPatient+']').val(idMedecin);
+        });
+    });
+
+
+   </script>
+{% endblock %}

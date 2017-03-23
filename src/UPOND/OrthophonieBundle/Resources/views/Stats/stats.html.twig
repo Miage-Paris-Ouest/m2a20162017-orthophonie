@@ -1,0 +1,105 @@
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Statistiques {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {#<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"/>#}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css"/>
+
+
+{% endblock %}
+
+{% block orthophonie_body %}
+    <div name="intitule">
+        <h1>Statistiques</h1>
+    </div><div name="intitule">
+    <h1>Gestion des médecins</h1>
+</div>
+    <div class="container">
+
+        <div style="height: 300px">
+            <canvas id="myChart"></canvas>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+
+        <table id="example" class="table table-condensed table-hover" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Phase</th>
+                    <th>Strategie</th>
+                    <th>Niveau</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exercice in exercices %}
+                    <tr>
+                        <td>{{ exercice.dateCreation|date('d/m/Y') }}</td>
+                        <td>{{ exercice.phase.nom }}</td>
+                        <td>{{ exercice.strategie.nom }}</td>
+                        <td>{{ exercice.niveau }}</td>
+                        <td> ??? </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <hr style="margin: 20px 0 15px 0">
+
+        <div class="text-right">
+            <img src="http://rrpb2.u-bordeaux4.fr/wp-content/uploads/2012/10/logo-Parisouest.jpg" width="100px">
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts_complement %}
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.0.1/Chart.js"></script>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [{% for date in graph|keys %}"{{ date|date('d/m/Y') }}",{% endfor %}],
+                datasets: [
+                    {
+                        label: "Score",
+                        fill: false,
+                        lineTension: 0.3,
+
+                        data: [{% for score in graph %}{{ score|number_format(2) }},{% endfor %}],
+                    }
+                ]
+            },
+            options: {
+                legend: {display:false},
+                maintainAspectRatio: false,
+//                        responsive: true
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                        }
+                    }]
+                }
+            }
+        });
+        $(document).ready(function () {
+            $('#example').DataTable({
+                dom: "lrtip",
+                "bDestroy": true
+            });
+        });
+    </script>
+{% endblock %}

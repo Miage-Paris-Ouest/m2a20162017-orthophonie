@@ -1,0 +1,10 @@
+<h1>Connexion</h1>
+
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+
+<form action="" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <input type="submit" />
+</form>

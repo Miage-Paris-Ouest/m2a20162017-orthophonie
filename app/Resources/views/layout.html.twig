@@ -1,0 +1,257 @@
+{# app/Resources/views/layout.html.twig #}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="{{ asset('assets/images/EMNP-logo.png') }}">
+        <title>{% block title %}EMNP{% endblock %}</title>
+
+        {% block stylesheets %}
+            {# On charge le CSS de bootstrap depuis le site directement #}
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link href="{{ asset('font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
+
+            <!-- iCheck -->
+            <link href="{{ asset('assets/vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
+            <!-- bootstrap-progressbar -->
+            <link href="{{ asset('assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet">
+            <!-- jVectorMap -->
+            <link href="{{ asset('assets/css/maps/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet"/>
+
+            <!-- Custom Theme Style -->
+            <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+
+        {% endblock %}
+
+        <style>
+            ul {
+                margin-top: 25px;
+                padding-left: 0;
+            }
+
+            li {
+                list-style: none;
+                padding-left: 0;
+                margin-bottom: 10px;
+            }
+
+            .item{
+                height: 100%;
+                cursor: pointer;
+            }
+
+            .item:hover {
+                background-color: #eee;
+            }
+
+        </style>
+    </head>
+
+    <body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+
+        {% block menu %}
+            {% if app.user %}
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="{{ path('upond_orthophonie_home')}}" class="site_title"><img class="" height="100%" src="{{ asset('assets/images/EMNP-logo.png') }}"/> <span>EMNP</span></a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <!-- menu profile quick info -->
+                        <div class="profile">
+                            <div class="profile_pic">
+                                <img src="http://164.132.227.93/LearnPlatform/assets/img/profile.jpg" alt="..." class="img-circle profile_img">
+                            </div>
+                            <div class="profile_info">
+                                <span>Bonjour {{ app.user.getPrenom }}</span>
+                                <h2> </h2>
+                            </div>
+                        </div>
+                        <!-- /menu profile quick info -->
+
+                        <br />
+
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+
+                            <div class="menu_section">
+                                <h3>Menu</h3>
+                                <ul class="nav side-menu">
+                                    <li>
+                                        <a href="{{ path('upond_orthophonie_home')}}"> <i class="fa fa-home"></i> Choix de l'exercice</a>
+                                    </li><li>
+                                        <a href="{{ path('upond_orthophonie_stats')}}"> <i class="fa fa-bar-chart"></i> Statistiques</a>
+                                    </li>
+
+                                    {% if app.session.get('role') == 'medecin' %}
+                                        <li class="dropdown">
+                                            <a href="#"><i class="fa fa-wrench"></i> Administration <span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li><a href="{{ path('upond_orthophonie_administration_medecin')}}"><i class="fa fa-user-md"></i> Gestion des medecins</a></li>
+                                                <li><a href="{{ path('upond_orthophonie_administration_patient')}}"><i class="fa fa-user"></i>  Gestion des patients</a></li>
+                                                <li><a href="{{ path('upond_orthophonie_administration_exercice')}}"><i class="fa fa-file-text-o"></i>  Gestion des exercices</a></li>
+                                                <li><a href="{{ path('upond_orthophonie_start')}}"><i class="fa fa-play"></i>  Créer une partie</a></li>
+                                                <!-- <li>{{ app.session.get('role') }}</li> -->
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#"><i class="fa fa-cubes"></i> Ressources <span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li><a href="{{ path('upond_orthophonie_administration_ressources_manager_images')}}"><i class="fa fa-picture-o"></i> Gestion des médias</a></li>
+                                                <li><a href="{{ path('upond_orthophonie_administration_ressources_manager_images_creation')}}"><i class="fa fa-file-picture-o"></i> Créer un média</a></li>
+
+                                                <!-- <li>{{ app.session.get('role') }}</li> -->
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+                        <!-- /sidebar menu -->
+
+                        <!-- /menu footer buttons -->
+                        <div class="sidebar-footer hidden-small">
+
+                        </div>
+                        <!-- /menu footer buttons -->
+                    </div>
+                </div>
+
+                <!-- top navigation -->
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav>
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        {{ app.user.getPrenom }} {{ app.user.getNom }} <img src="http://164.132.227.93/LearnPlatform//assets/img/profile.jpg" alt=""><span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                        <li>
+                                            <a href="{{ path('fos_user_profile_edit')}}">
+                                                <i class="fa fa-pencil"></i>
+                                                Modifier votre profil
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('fos_user_change_password')}}">
+                                                <i class="fa fa-pencil"></i>
+                                                Modifier votre mot de passe
+                                            </a>
+                                        </li>
+                                        <li role="separator" class="divider">
+
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('fos_user_security_logout')}}">
+                                                <i class="fa fa-sign-out"></i>
+                                                Déconnexion</a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="{{ path('upond_orthophonie_home')}}" class="site_title"><i class="fa fa-paw"></i> <span>EMNP</span></a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <!-- menu profile quick info -->
+
+                        <!-- /menu profile quick info -->
+
+                        <br />
+
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+
+                                <ul class="nav side-menu">
+                                    <li>
+                                        <a href="{{ path('fos_user_security_login')}}"><i class="fa fa-sign-in"></i>Connexion</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('fos_user_registration_register')}}"><i class="fa fa-plus"></i>Inscription</a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+                        <!-- /sidebar menu -->
+
+
+                        <!-- /menu footer buttons -->
+                    </div>
+                </div>
+
+                <div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header"><a class="navbar-brand" href="#">Orthophonie</a>
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="collapse navbar-collapse navbar-menubuilder">
+                            <ul class="nav navbar-nav navbar-left">
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
+
+        {% block user %}
+            <div class="right_col" role="main">
+                <div class="row">
+                    {% if app.user is null %}
+                        {{ render(controller("UPONDOrthophonieBundle:Connexion:accueil")) }}
+                    {% endif %}
+                    <div id="content" class="col-md-12">
+                        {% block body %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+
+            {% block javascripts %}
+                {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+                <script src="//code.jquery.com/jquery-2.2.3.js"></script>
+                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+                {% javascripts '@UPONDOrthophonieBundle/Resources/public/js/jquery.countdown360.js' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+                {% endjavascripts %}
+                <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+                <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+                <script src="{{ asset('assets/js/custom.js') }}"></script>
+
+            {% endblock %}
+            {% block javascripts_complement %}
+            {% endblock %}
+        {% endblock %}
+</div>
+</div>
+</body>
+</html>
