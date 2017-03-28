@@ -47,11 +47,12 @@ class RessourcesManagerController extends Controller
 
 
         $counttotal = count($MultimediaRepository->findAll());
+        //print_r("total = ".$counttotal." limit = ".$limit." nb pages = ".floor($counttotal/$limit)." rest=".$counttotal%$limit);
         $nbpages = ($counttotal%$limit)+1;
 
         $listMultimedia = $MultimediaRepository->findBy(
             array(),        // $where
-            array(),    // $orderBy
+            array('nom'=>'ASC'),    // $orderBy
             $limit,                        // $limit
             ($page-1)*$limit                          // $offset
         );
