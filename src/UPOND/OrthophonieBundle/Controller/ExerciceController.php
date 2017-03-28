@@ -121,6 +121,8 @@ class ExerciceController extends Controller
 
         $exercice = $ExerciceRepository->getExerciceByPartiePhaseStrategieNiveau($session->get('partie'), $session->get('phase'), $session->get('strategie'), $session->get('niveau'));
 
+        // dump($exercice);
+
         // on recupere l'etape courante de l'exercice
         $etapeCourante = $exercice->getEtapeCourante();
         // on recupere les multimedias de l'etape courante
