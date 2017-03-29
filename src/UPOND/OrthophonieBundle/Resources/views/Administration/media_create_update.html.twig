@@ -58,14 +58,15 @@
                 <hr>
 
                 <h3>Son</h3>
-                <input type="file" id="files" onchange="readAudio(this);" name="audio"/>
+                <div>
+                    {% if action == 'Update' %}
+                        <input class="form-control" type="text" name="audio" value="{{ obj_multimedia.getSon }}"/>
+                    {% else %}
+                        <input class="form-control" type="text" name="audio" value=""/>
+                    {% endif %}
+                    <button class="helper btn btn-info" type="button" title="" >Tester <i class="fa fa-play"></i></button>
+                </div>
 
-                {% if action == 'Update' %}
-                <audio controls>
-                    <source id="audiopreview" src="{{ asset(obj_multimedia.getSon) }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                {% endif %}
 
                 {% if erreur_audio is defined %}
                     <div class="alert alert-danger" role="alert">{{ erreur_audio }}</div>
@@ -117,14 +118,54 @@
               reader.readAsDataURL(input.files[0]);
           }
       }
-      function readAudio(input) {
-          /*if (input.files && input.files[0]) {
-              var reader = new FileReader();
-              reader.onload = function (e) {
-                  $('#audiopreview').attr('src', e.target.result);
-              }
-              reader.readAsDataURL(input.files[0]);
-          }*/
-      }
+
    </script>
+
+    <script type="text/javascript">
+
+        function checkCompatibilty () {
+            if(!('speechSynthesis' in window)){
+                alert('Your browser is not supported. If google chrome, please upgrade!!');
+            }
+        };
+
+        checkCompatibilty();
+        var voiceOptions = document.getElementById('voiceOptions');
+        var volumeSlider = document.getElementById('volumeSlider');
+        var rateSlider = document.getElementById('rateSlider');
+        var pitchSlider = document.getElementById('pitchSlider');
+        var myText = document.getElementById('myText');
+
+
+        var voiceMap = [];
+
+        function loadVoices () {
+            var voices = speechSynthesis.getVoices();
+            for (var i = 0; i < voices.length; i++) {
+                var voice = voices[i];
+                var option = document.createElement('option');
+                option.value = voice.name;
+                option.innerHTML = voice.name;
+                voiceOptions.appendChild(option);
+                voiceMap[voice.name] = voice;
+            };
+        };
+
+        window.speechSynthesis.onvoiceschanged = function(e){
+            loadVoices();
+        };
+
+        $(".helper").click(function () {
+
+            var msg = new SpeechSynthesisUtterance();
+            msg.text = $(this).prev()[0].value();
+            msg.volume = volumeSlider.value;
+            msg.voice = voiceMap[voiceOptions.value];
+            msg.rate = rateSlider.value;
+            msg.Pitch = pitchSlider.value;
+
+            window.speechSynthesis.speak(msg);
+        });
+
+    </script>
 {% endblock %}

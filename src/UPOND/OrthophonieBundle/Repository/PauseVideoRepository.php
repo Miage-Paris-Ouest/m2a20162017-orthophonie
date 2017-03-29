@@ -24,7 +24,7 @@ class PauseVideoRepository extends \Doctrine\ORM\EntityRepository
             'dureeMax' => $dureeMax));
 
         $pauseVideos = ($queryPauseVideo->getResult());
-        print_r($pauseVideos);
+        //print_r($pauseVideos);
         // on prend un id aléatoire parmi les résultats
         $tabIdPauseVideo = array_rand($pauseVideos, 1);
         // on récupere l'entité de l'ID
