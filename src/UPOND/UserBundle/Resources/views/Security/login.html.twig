@@ -1,9 +1,8 @@
 {# src/OC/UserBundle/Resources/views/Security/login.html.twig #}
 
-{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+{% extends "::layout.html.twig" %}
 
 {% block body %}
-
     {# S'il y a une erreur, on l'affiche dans un joli cadre #}
     {% if error %}
         <div class="alert alert-danger">{{ error.message }}</div>
@@ -23,5 +22,4 @@
 
         <input type="submit" value="Connexion" class="btn btn-primary" />
     </form>
-
 {% endblock %}

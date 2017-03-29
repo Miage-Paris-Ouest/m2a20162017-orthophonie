@@ -10,13 +10,13 @@
 
         {% block stylesheets %}
             {# On charge le CSS de bootstrap depuis le site directement #}
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-            <link href="{{ asset('font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
-
-            <!-- jVectorMap -->
-            <link href="{{ asset('assets/css/maps/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet"/>
-            <!-- Data Tables full -->
+            <!-- LOAD ALL DEFAULT DEFAULT libs CSS : Jquery, Bootstrap, Datatable and datatables plugins  -->
             <link rel="stylesheet" type="text/css" href="{{ asset('assets/DataTables/datatables.min.css') }}"/>
+
+            <link href="{{ asset('font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
+            <!-- jVectorMap -->
+            <!--<link href="{{ asset('assets/css/maps/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet"/>-->
+
             <!-- Custom Theme Style -->
             <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
@@ -224,10 +224,9 @@
 
             {% block javascripts %}
                 {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
-                <!-- JQuery -->
-                <script src="//code.jquery.com/jquery-2.2.3.js"></script>
-                <!-- Bootstrap -->
-                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+                <!-- LOAD ALL DEFAULT DEFAULT libs : Jquery, Bootstrap, Datatable and datatables plugins  -->
+                <script type="text/javascript" src="{{ asset('assets/DataTables/datatables.min.js') }}"></script>
 
                 {% javascripts '@UPONDOrthophonieBundle/Resources/public/js/jquery.countdown360.js' %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>
