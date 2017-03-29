@@ -13,13 +13,10 @@
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
             <link href="{{ asset('font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
 
-            <!-- iCheck -->
-            <link href="{{ asset('assets/vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
-            <!-- bootstrap-progressbar -->
-            <link href="{{ asset('assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet">
             <!-- jVectorMap -->
             <link href="{{ asset('assets/css/maps/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet"/>
-
+            <!-- Data Tables full -->
+            <link rel="stylesheet" type="text/css" href="{{ asset('assets/DataTables/datatables.min.css') }}"/>
             <!-- Custom Theme Style -->
             <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
@@ -238,17 +235,26 @@
 
             {% block javascripts %}
                 {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+                <!-- JQuery -->
                 <script src="//code.jquery.com/jquery-2.2.3.js"></script>
+                <!-- Bootstrap -->
                 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
                 {% javascripts '@UPONDOrthophonieBundle/Resources/public/js/jquery.countdown360.js' %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>
                 {% endjavascripts %}
+
+
                 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
                 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+                <!-- Datatable Full JS -->
+                <script type="text/javascript" src="{{ asset('assets/DataTables/datatables.min.js') }}"></script>
+                <!-- Custom -->
                 <script src="{{ asset('assets/js/custom.js') }}"></script>
 
             {% endblock %}
             {% block javascripts_complement %}
+
             {% endblock %}
         {% endblock %}
 </div>

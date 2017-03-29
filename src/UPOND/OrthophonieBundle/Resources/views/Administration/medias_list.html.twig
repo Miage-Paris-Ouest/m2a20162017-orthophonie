@@ -16,10 +16,13 @@
     <form action="{{ path('upond_orthophonie_administration_ressources_manager_images_update_simple')}}" method="POST" class="Multimedias">
         <div class="row">
             <div class="col-sm-4 col-md-4 col-lg-4">
-                <ul class="pagination">
-                    <li><a href="{{ path('upond_orthophonie_administration_ressources_manager_images')}}?page={{ page-1 }}"><i class="fa fa-caret-left"></i> Page Précédent</a></li>
-                    <li><a href="{{ path('upond_orthophonie_administration_ressources_manager_images')}}?page={{ page+1 }}"> Page Suivant <i class="fa fa-caret-right"></i></a></li>
-                </ul>
+                <select id="strat_filter" class="form-control" name="strategie_filter">
+                    <option value="0"></option>
+                    {% for strategie in listStrategie %}
+                        <option value="{{ strategie.getNom }}">{{ strategie.getNom }}</option>
+                    {% endfor %}
+                </select>
+
             </div>
 
             <div class="col-sm-4 col-md-4 col-lg-4">
@@ -27,20 +30,22 @@
             </div>
 
         </div>
-    <table class='table table-striped container'>
-        <tr>
-            <th>Image</th>
-            <th>Son</th>
-            <th>Texte</th>
-            <th>Action</th>
-        </tr>
-
+    <table id="mytab" class='table table-striped container'>
+        <thead>
+        <th>Image</th>
+        <th id="strat_col">Strategie</th>
+        <th>Son</th>
+        <th>Texte</th>
+        <th>Action</th>
+        </thead>
+        <tbody>
         {% for multimedia in listMultimedias %}
             <tr>
                 <td>
                     <img src="{{ asset(multimedia.getImage) }}" width="300px" class="img-thumbnail "/>
                     <input class="" type="hidden" name="image[]" value="{{ multimedia.getIDMultimedia }}">
                 </td>
+                <td>{{ multimedia.getStrategie.getNom }}</td>
                 <td>
                     <audio controls>
                         <source src="{{ asset(multimedia.getSon) }}" type="audio/mpeg">
@@ -57,6 +62,7 @@
 
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 </form>
 {% endblock %}
@@ -65,6 +71,22 @@
 
   <script>
     $( document ).ready(function() {
+        var table = $('#mytab').DataTable({
+            dom: "lrtip",
+            "bDestroy": true
+        });
+        $('#strat_filter').on( 'keyup change', function () {
+            if(this.value == 0){
+                table.column(1)
+                        .search('')
+                        .draw();
+            }
+            else if ((table.column(1).search() !== this.value) ) {
+                table.column(1)
+                        .search( this.value )
+                        .draw();
+            }
+        } );
         $('[name="ListMedecins"]').each(function () {
             idMedecin = $(this).val();
             idPatient = $(this).attr("idPatient");
@@ -77,7 +99,6 @@
             $('[name=idMedecin][idpatient='+idPatient+']').val(idMedecin);
         });
     });
-
 
    </script>
 {% endblock %}

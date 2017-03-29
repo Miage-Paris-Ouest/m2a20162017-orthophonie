@@ -40,25 +40,21 @@ class RessourcesManagerController extends Controller
         }
         // on recupere l'exercice associ�e a la strategie, la phase, le niveau et la partie
         $page = isset($_GET['page'])?$_GET['page']:1;
-        $limit = 25;
         //$pag = new Paginator();
         $em = $this->getDoctrine()->getManager();
         $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
-
-
-        $counttotal = count($MultimediaRepository->findAll());
-        //print_r("total = ".$counttotal." limit = ".$limit." nb pages = ".floor($counttotal/$limit)." rest=".$counttotal%$limit);
-        $nbpages = ($counttotal%$limit)+1;
+        $StrategieRepository= $em->getRepository('UPONDOrthophonieBundle:Strategie');
 
         $listMultimedia = $MultimediaRepository->findBy(
             array(),        // $where
-            array('nom'=>'ASC'),    // $orderBy
-            $limit,                        // $limit
-            ($page-1)*$limit                          // $offset
+            array('idMultimedia'=>'ASC'),    // $orderBy
+           null,                        // $limit
+          null                         // $offset
         );
 
+        $listStrategie = $StrategieRepository->findAll();
         //print_r(var_dump($MultimediaRepository));
-        return $this->render('UPONDOrthophonieBundle:Administration:medias_list.html.twig', array('listMultimedias' => $listMultimedia,"nbpages"=> $nbpages,"page" => $page));
+        return $this->render('UPONDOrthophonieBundle:Administration:medias_list.html.twig', array('listMultimedias' => $listMultimedia,'listStrategie'=>$listStrategie));
     }
     public function imagesCreateAction(Request $request){
 
