@@ -132,33 +132,22 @@
                             </div>
 
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="">
-                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        {{ app.user.getPrenom }} {{ app.user.getNom }} <img src="http://164.132.227.93/LearnPlatform//assets/img/profile.jpg" alt=""><span class=" fa fa-angle-down"></span>
+                                <li>
+                                    <a href="{{ path('fos_user_security_logout')}}">
+                                        <i class="fa fa-sign-out"></i>
+                                        Déconnexion</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_profile_edit')}}">
+                                        <i class="fa fa-pencil"></i>
+                                        Modifier votre profil
                                     </a>
-                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                        <li>
-                                            <a href="{{ path('fos_user_profile_edit')}}">
-                                                <i class="fa fa-pencil"></i>
-                                                Modifier votre profil
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('fos_user_change_password')}}">
-                                                <i class="fa fa-pencil"></i>
-                                                Modifier votre mot de passe
-                                            </a>
-                                        </li>
-                                        <li role="separator" class="divider">
-
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('fos_user_security_logout')}}">
-                                                <i class="fa fa-sign-out"></i>
-                                                Déconnexion</a>
-                                        </li>
-                                    </ul>
-
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_change_password')}}">
+                                        <i class="fa fa-pencil"></i>
+                                        Modifier votre mot de passe
+                                    </a>
                                 </li>
                             </ul>
                         </nav>

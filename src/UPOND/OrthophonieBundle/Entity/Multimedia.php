@@ -40,7 +40,7 @@ class Multimedia
     /**
      * @var string
      *
-     * @ORM\Column(name="son", type="string", length=100, nullable=true)
+     * @ORM\Column(name="son", type="string", length=150, nullable=true)
      */
     private $son;
 

@@ -305,6 +305,7 @@ class RessourcesManagerController extends Controller
             foreach($idMultimedias as $k=>$idm){
                 $actualmedia = $MultimediaRepository->find($idm);
                 $actualmedia->setNom($textmedia[$k]);
+                $actualmedia->setSon($idSon[$k]);
             }
 
             $em->flush();

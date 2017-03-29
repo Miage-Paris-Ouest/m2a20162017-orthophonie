@@ -13,7 +13,7 @@
 
     {% if TypeAffichage == "Exercice" or TypeAffichage == "Nom" %}
         <h2>Exercice </h2>
-        <label>
+    <label>
         <span>Voix : </span>
         <select id="voiceOptions"></select>
     </label>
@@ -55,9 +55,9 @@
                                 <div class="col-xs-12 bottom text-center">
                                     <div class="col-xs-12 col-sm-12 emphasis">
                                         <!--<audio controls style="width: 100%">
-                                            <source src="{{ asset(multimedia.getSon) }}" type="audio/mpeg">
+                                            <source src="" type="audio/mpeg">
                                                     Votre navigateur internet ne supporte pas l'élément audio.
-                                        </audio>--><button class="helper btn btn-info" type="button" title="{{ multimedia.getNom }}" >Indice</button>
+                                        </audio>--><button class="helper btn btn-info" type="button" title="{{ multimedia.getSon }}" >Indice</button>
 
                                     </div>
                                 </div>
