@@ -25,10 +25,6 @@
         <span>Vitesse : </span>
         <input type="range" id="rateSlider" min="0" max="1" value="0.75" step="0.1" />
     </label>
-    <label>
-        <span>Pitch : </span>
-        <input type="range" id="pitchSlider" min="0" max="2" value="0.5" step="0.1" />
-    </label>
         <div class="row">
 
 
@@ -190,7 +186,7 @@
         msg.volume = volumeSlider.value;
         msg.voice = voiceMap[voiceOptions.value];
         msg.rate = rateSlider.value;
-        msg.Pitch = pitchSlider.value;
+        msg.Pitch = 1;
         msg.text = $(this).attr("title");
         window.speechSynthesis.speak(msg);
     });
