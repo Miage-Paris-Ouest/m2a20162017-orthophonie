@@ -12,13 +12,28 @@
     <h1>Ajout d'une ressource multimédia</h1>
 </div>
     <div class="container">
+
         <div class="row">
             <form method="POST" action="{{ path(action_path)}}" class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" enctype="multipart/form-data" >
 
+                <div class="row">
+                    <h3>Paramètres de la voix</h3>
+                    <div class="col-sm-6">
+                        <span>Voix : </span>
+                        <select class="form-control" id="voiceOptions"></select>
+                    </div>
+                    <div class="col-sm-6">
+                        <span>Volume : </span>
+                        <input class="form-control" type="range" id="volumeSlider" min="0" max="1" value="0.75" step="0.1" />
+                    </div>
+                    <div class="col-sm-6">
+                        <span>Vitesse : </span>
+                        <input class="form-control" type="range" id="rateSlider" min="0" max="1" value="0.75" step="0.1" />
+                    </div>
+                </div>
                 {% if success_message is defined %}
                     <div class="alert alert-success" role="alert">{{ success_message }}</div>
                 {% endif %}
-
 
 
                 <h3>Strategie</h3>
@@ -58,14 +73,15 @@
                 <hr>
 
                 <h3>Son</h3>
-                <input type="file" id="files" onchange="readAudio(this);" name="audio"/>
 
+                <div>
                 {% if action == 'Update' %}
-                <audio controls>
-                    <source id="audiopreview" src="{{ asset(obj_multimedia.getSon) }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
+                    <input class="form-control" type="text" name="audio" value="{{ obj_multimedia.getSon }}" />
+                {% else %}
+                    <input class="form-control" type="text" name="audio" value="" />
                 {% endif %}
+                    <button class="helper btn btn-info" type="button" title="" >Tester <i class="fa fa-play"></i></button>
+                </div>
 
                 {% if erreur_audio is defined %}
                     <div class="alert alert-danger" role="alert">{{ erreur_audio }}</div>
@@ -127,4 +143,50 @@
           }*/
       }
    </script>
+    <script type="text/javascript">
+
+        function checkCompatibilty () {
+            if(!('speechSynthesis' in window)){
+                alert('Your browser is not supported. If google chrome, please upgrade!!');
+            }
+        };
+
+        checkCompatibilty();
+        var voiceOptions = document.getElementById('voiceOptions');
+        var volumeSlider = document.getElementById('volumeSlider');
+        var rateSlider = document.getElementById('rateSlider');
+        var pitchSlider = document.getElementById('pitchSlider');
+        var myText = document.getElementById('myText');
+
+
+        var voiceMap = [];
+
+        function loadVoices () {
+            var voices = speechSynthesis.getVoices();
+            for (var i = 0; i < voices.length; i++) {
+                var voice = voices[i];
+                var option = document.createElement('option');
+                option.value = voice.name;
+                option.innerHTML = voice.name;
+                voiceOptions.appendChild(option);
+                voiceMap[voice.name] = voice;
+            };
+        };
+
+        window.speechSynthesis.onvoiceschanged = function(e){
+            loadVoices();
+        };
+
+        $(".helper").click(function () {
+            var msg = new SpeechSynthesisUtterance();
+            msg.text = $(this).prev()[0].value;
+            msg.volume = volumeSlider.value;
+            msg.voice = voiceMap[voiceOptions.value];
+            msg.rate = rateSlider.value;
+            msg.Pitch = 1;
+
+            window.speechSynthesis.speak(msg);
+        });
+
+    </script>
 {% endblock %}
