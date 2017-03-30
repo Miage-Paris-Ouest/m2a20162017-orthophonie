@@ -15,7 +15,7 @@
     <h3>Liste des images</h3>
     <form action="{{ path('upond_orthophonie_administration_ressources_manager_images_update_simple')}}" method="POST" class="Multimedias">
         <div class="row">
-            <div class="col-sm-3 col-md-3 col-lg-3">
+            <div class="col-sm-6 col-md-4 col-lg-2">
                 <select id="strat_filter" class="form-control" name="strategie_filter">
                     <option value="0"></option>
                     {% for strategie in listStrategie %}
@@ -23,27 +23,26 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
+            <div class="col-sm-6 col-md-4 col-lg-2">
                 <input type="submit" name="validate" value="Enregister nouveaux noms" class="btn btn-success">
             </div>
-            <div class="col-sm-6 col-md-6 col-lg-6">
-                <label>
-                    <span>Voix : </span>
-                    <select class="form-control" id="voiceOptions"></select>
-                </label>
-                <label>
-                    <span>Volume : </span>
-                    <input class="form-control" type="range" id="volumeSlider" min="0" max="1" value="0.75" step="0.1" />
-                </label>
-                <label>
-                    <span>Vitesse : </span>
-                    <input class="form-control" type="range" id="rateSlider" min="0" max="1" value="0.75" step="0.1" />
-                </label>
-                <label>
-                    <span>Pitch : </span>
-                    <input class="form-control" type="range" id="pitchSlider" min="0" max="2" value="0.5" step="0.1" />
-                </label>
+            <div class="col-sm-6 col-md-4 col-lg-2">
+                <span>Voix : </span>
+                <select class="form-control" id="voiceOptions"></select>
             </div>
+            <div class="col-sm-6 col-md-4 col-lg-2">
+                <span>Volume : </span>
+                <input class="form-control" type="range" id="volumeSlider" min="0" max="1" value="0.75" step="0.1" />
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-2">
+                <span>Vitesse : </span>
+                <input class="form-control" type="range" id="rateSlider" min="0" max="1" value="0.75" step="0.1" />
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-2">
+                <span>Pitch : </span>
+                <input class="form-control" type="range" id="pitchSlider" min="0" max="2" value="0.5" step="0.1" />
+            </div>
+
         </div>
     <table id="mytab" class='table table-striped container'>
         <thead>
@@ -57,7 +56,7 @@
         {% for multimedia in listMultimedias %}
             <tr>
                 <td>
-                    <img src="{{ asset(multimedia.getImage) }}" width="300px" class="img-thumbnail "/>
+                    <img src="{{ asset(multimedia.getImage) }}" height="150px" class=""/>
                     <input class="" type="hidden" name="image[]" value="{{ multimedia.getIDMultimedia }}">
                 </td>
                 <td>{{ multimedia.getStrategie.getNom }}</td>
@@ -69,6 +68,7 @@
                     <input class="form-control" type="text" name="text[]" value="{{ multimedia.getNom }}" />
                 </td>
                 <td>
+                    <button type="submit" title="Modifier" class="btn btn-success"><i class="fa fa-check"></i></button>
                     <a title="Modifier média" class="btn btn-primary" href="{{ path('upond_orthophonie_administration_ressources_manager_images_update')}}?media_id={{ multimedia.getIDMultimedia }}"><i class="fa fa-edit"></i></a>
                 </td>
 
