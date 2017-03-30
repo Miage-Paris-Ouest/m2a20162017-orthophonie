@@ -29,7 +29,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class AdministrationController extends Controller
 {
-    public function patientsAction(Request $request){
+    public function patientsAction(Request $request)
+    {
         dump($this->get('security.token_storage')->getToken());
         $request = $this->container->get('request');
         if ($request->getSession()->get('role') != 'medecin') {
@@ -45,20 +46,20 @@ class AdministrationController extends Controller
 
         $listMedecins = $MedecinRepository->findAll();
         //id de l'utilisateur en session
-        $idUser=$this->container->get('security.context')->getToken()->getUser()->getId();
-        $idMedecinUser=$MedecinRepository->findBy(array('utilisateur'=> $idUser));
+        $idUser = $this->container->get('security.context')->getToken()->getUser()->getId();
+        $idMedecinUser = $MedecinRepository->findBy(array('utilisateur' => $idUser));
 
 
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             // on recupere l'id utilisateur via le formulaire POST précédent
             $idPatient = $_POST['idPatient'];
             //recuperation du patient
-            $patient=$PatientRepository->find($idPatient);
+            $patient = $PatientRepository->find($idPatient);
 
-            $idMed=$_POST['idMedecin'];
+            $idMed = $_POST['idMedecin'];
 
-            foreach ($listMedecins as $medecin){
-                if ($medecin->getIdMedecin()== $idMed){
+            foreach ($listMedecins as $medecin) {
+                if ($medecin->getIdMedecin() == $idMed) {
                     $patient->addMedecin($medecin);
                 }
 
@@ -68,9 +69,10 @@ class AdministrationController extends Controller
         //listes des patients non affectés
         $listPatients = $PatientRepository->findUnaffectedPatient();
         //listes des patients du medecin en qui se connecte
-        $myPatient=$MedecinRepository->findPatientByMedecin($idMedecinUser);
-        return $this->render('UPONDOrthophonieBundle:Administration:patients.html.twig', array('listPatients' => $listPatients, 'listUtilisateurs' => $listUtilisateurs, 'ListMedecins' => $listMedecins,'ListMyPatient'=>$myPatient));
+        $myPatient = $MedecinRepository->findPatientByMedecin($idMedecinUser);
+        return $this->render('UPONDOrthophonieBundle:Administration:patients.html.twig', array('listPatients' => $listPatients, 'listUtilisateurs' => $listUtilisateurs, 'ListMedecins' => $listMedecins, 'ListMyPatient' => $myPatient));
     }
+
     public function patientsRetireAction(Request $request)
     {
         if ($request->getSession()->get('role') != 'medecin') {
@@ -85,24 +87,23 @@ class AdministrationController extends Controller
 
         $listMedecins = $MedecinRepository->findAll();
         //id de l'utilisateur en session
-        $idUser=$this->container->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->container->get('security.context')->getToken()->getUser()->getId();
 
-        $idMedecinUser=$MedecinRepository->findBy(array('utilisateur'=> $idUser));
+        $idMedecinUser = $MedecinRepository->findBy(array('utilisateur' => $idUser));
 
 
-
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
 
             // on recupere l'id utilisateur via le formulaire POST précédent
             $idPatient = $_POST['idPatient'];
             // on récupère le patient
             $patient = $PatientRepository->find($idPatient);
-            $utilisateur=$UtilisateurRepository->find($idUser);
-            $idMedecin=$MedecinRepository->findIdMedecinByRef($utilisateur);
+            $utilisateur = $UtilisateurRepository->find($idUser);
+            $idMedecin = $MedecinRepository->findIdMedecinByRef($utilisateur);
 
             foreach ($patient->getMedecins() as $medecin) {
                 //if ($medecin->getIdMedecin()== (int)$idMedecin){
-                if ($medecin->getIdMedecin()== $idMedecin->getIdMedecin()){
+                if ($medecin->getIdMedecin() == $idMedecin->getIdMedecin()) {
                     $patient->removeMedecin($medecin);
                 }
             }
@@ -112,8 +113,8 @@ class AdministrationController extends Controller
         //listes des patients non affectés
         $listPatients = $PatientRepository->findUnaffectedPatient();
         //liste des patients du medecin qui se connecte
-        $myPatient=$MedecinRepository->findPatientByMedecin($idMedecinUser);
-        return $this->render('UPONDOrthophonieBundle:Administration:patients.html.twig', array('listPatients' => $listPatients, 'listUtilisateurs' => $listUtilisateurs, 'ListMedecins' => $listMedecins,'ListMyPatient'=>$myPatient));
+        $myPatient = $MedecinRepository->findPatientByMedecin($idMedecinUser);
+        return $this->render('UPONDOrthophonieBundle:Administration:patients.html.twig', array('listPatients' => $listPatients, 'listUtilisateurs' => $listUtilisateurs, 'ListMedecins' => $listMedecins, 'ListMyPatient' => $myPatient));
     }
 
     public function medecinsAction(Request $request)
@@ -146,7 +147,7 @@ class AdministrationController extends Controller
         $MedecinRepository = $em->getRepository('UPONDOrthophonieBundle:Medecin');
 
 
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             // on recupere l'id utilisateur via le formulaire POST précédent
             $idUtilisateur = $_POST['idUtilisateur'];
             // on recupere l'entité de l'utilisateur
@@ -183,7 +184,7 @@ class AdministrationController extends Controller
         $MedecinRepository = $em->getRepository('UPONDOrthophonieBundle:Medecin');
 
 
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             // on recupere l'id utilisateur via le formulaire POST précédent
             $idUtilisateur = $_POST['idUtilisateur'];
             // on recupere l'entité de l'utilisateur
@@ -208,7 +209,8 @@ class AdministrationController extends Controller
         return $this->render('UPONDOrthophonieBundle:Administration:medecins.html.twig', array('listPatients' => $listPatients, 'listUtilisateurs' => $listUtilisateurs, 'listMedecins' => $listMedecins));
     }
 
-    public function exercicesAction(){
+    public function exercicesAction()
+    {
         $request = $this->container->get('request');
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
@@ -221,14 +223,15 @@ class AdministrationController extends Controller
         return $this->render('UPONDOrthophonieBundle:Administration:exercices.html.twig', array('listMultimedias' => $listMultimedias));
     }
 
-    public function exercicesAjouterAction(Request $request){
+    public function exercicesAjouterAction(Request $request)
+    {
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
         }
         // on recupere l'exercice associée a la strategie, la phase, le niveau et la partie
         $em = $this->getDoctrine()->getManager();
         $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             // on redirige vers un autre controller
             $response = $this->forward('UPONDOrthophonieBundle:Administration:exerciceForm');
 
@@ -238,7 +241,8 @@ class AdministrationController extends Controller
         return $this->render('UPONDOrthophonieBundle:Administration:exercices.html.twig', array('listMultimedias' => $listMultimedias));
     }
 
-    public function exercicesModifierAction(Request $request){
+    public function exercicesModifierAction(Request $request)
+    {
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
         }
@@ -246,7 +250,7 @@ class AdministrationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
 
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             // on recupere l'id multimedia via le formulaire POST précédent
             $idMultimedia = $_POST['idMultimedia'];
             $session = $request->getSession();
@@ -261,7 +265,8 @@ class AdministrationController extends Controller
         return $this->render('UPONDOrthophonieBundle:Administration:exercices.html.twig', array('listMultimedias' => $listMultimedias));
     }
 
-    public function exercicesSupprimerAction(Request $request){
+    public function exercicesSupprimerAction(Request $request)
+    {
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
         }
@@ -269,27 +274,21 @@ class AdministrationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
 
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             // on recupere l'id multimedia via le formulaire POST précédent
             $idMultimedia = $_POST['idMultimedia'];
             // on recupere l'entité du multimedia
             $multimedia = $MultimediaRepository->findOneByIdMultimedia($idMultimedia);
 
             // on supprime l'image et le son du multimedia du site
-            if (!unlink(__DIR__.'/../../../../web/'.$multimedia->getImage()))
-            {
-                echo ("Erreur lors de la suppression du fichier ".$multimedia->getImage());
-            }
-            else
-            {
+            if (!unlink(__DIR__ . '/../../../../web/' . $multimedia->getImage())) {
+                echo("Erreur lors de la suppression du fichier " . $multimedia->getImage());
+            } else {
                 // fichier supprimé
             }
-            if (!unlink(__DIR__.'/../../../../web/'.$multimedia->getSon()))
-            {
-                echo ("Erreur lors de la suppression du fichier ".$multimedia->getSon());
-            }
-            else
-            {
+            if (!unlink(__DIR__ . '/../../../../web/' . $multimedia->getSon())) {
+                echo("Erreur lors de la suppression du fichier " . $multimedia->getSon());
+            } else {
                 // fichier supprimé
             }
             // on supprime le multimedia
@@ -301,7 +300,8 @@ class AdministrationController extends Controller
         return $this->render('UPONDOrthophonieBundle:Administration:exercices.html.twig', array('listMultimedias' => $listMultimedias));
     }
 
-    public function exerciceFormAction(Request $request){
+    public function exerciceFormAction(Request $request)
+    {
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
         }
@@ -310,12 +310,11 @@ class AdministrationController extends Controller
         $formBuilder = $this->get('form.factory')->createBuilder('form', $multimedia);
         // On ajoute les champs que l'on veut à notre formulaire
         $formBuilder
-
             ->add('Strategie', 'entity', array(
-                'class'    => 'UPONDOrthophonieBundle:Strategie',
+                'class' => 'UPONDOrthophonieBundle:Strategie',
                 'property' => 'Nom',
                 'multiple' => false,
-                'query_builder' => function(StrategieRepository $er) {
+                'query_builder' => function (StrategieRepository $er) {
 
                     return $er->createQueryBuilder('strategie')
                         ->where("strategie.nom != 'Aléatoire'");
@@ -335,12 +334,12 @@ class AdministrationController extends Controller
         if ($form->handleRequest($request)->isValid()) {
 
             $em = $this
-                    ->getDoctrine()
-                    ->getManager();
+                ->getDoctrine()
+                ->getManager();
             $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
             // on upload l'image dans le site
             // on recupere le chemin du repertoire web/Banques images et sons
-            $dir = __DIR__.'/../../../../web/'."Banque images et sons/Images/";
+            $dir = __DIR__ . '/../../../../web/' . "Banque images et sons/Images/";
             // on recupere le nom original du fichier
             $file = $form['Image']->getData();
             $nomOldFichier = $file->getClientOriginalName();
@@ -351,13 +350,13 @@ class AdministrationController extends Controller
                 // l'extension n'est pas reconnu
                 $extension = 'bin';
             }
-            $nomFichier = $nomOldFichier.rand(1, 999).'.'.$extension;
+            $nomFichier = $nomOldFichier . rand(1, 999) . '.' . $extension;
             $file->move($dir, $nomFichier);
-            $cheminImage = "/Banque images et sons/Images/".$nomFichier;
+            $cheminImage = "/Banque images et sons/Images/" . $nomFichier;
 
             // on upload le son dans le site
             // on recupere le chemin du repertoire web/Banques images et sons
-            $dir = __DIR__.'/../../../../web/'."Banque images et sons/Sons/";
+            $dir = __DIR__ . '/../../../../web/' . "Banque images et sons/Sons/";
             // on recupere le nom original du fichier
             $file = $form['Son']->getData();
             $nomOldFichier = $file->getClientOriginalName();
@@ -368,9 +367,9 @@ class AdministrationController extends Controller
                 // l'extension n'est pas reconnu
                 $extension = 'bin';
             }
-            $nomFichier = $nomOldFichier.rand(1, 999).'.'.$extension;
+            $nomFichier = $nomOldFichier . rand(1, 999) . '.' . $extension;
             $file->move($dir, $nomFichier);
-            $cheminSon = "/Banque images et sons/Sons/".$nomFichier;
+            $cheminSon = "/Banque images et sons/Sons/" . $nomFichier;
 
             $multimedia->setImage($cheminImage);
             $multimedia->setSon($cheminSon);
@@ -384,7 +383,8 @@ class AdministrationController extends Controller
         return $this->render('UPONDOrthophonieBundle:Administration:exercice_ajouter_form.html.twig', array('form' => $form->createView()));
     }
 
-    public function exerciceUpdateFormAction(Request $request){
+    public function exerciceUpdateFormAction(Request $request)
+    {
 
         $em = $this
             ->getDoctrine()
@@ -398,12 +398,11 @@ class AdministrationController extends Controller
         $formBuilder = $this->get('form.factory')->createBuilder('form', $multimedia);
         // On ajoute les champs que l'on veut à notre formulaire
         $formBuilder
-
             ->add('Strategie', 'entity', array(
-                'class'    => 'UPONDOrthophonieBundle:Strategie',
+                'class' => 'UPONDOrthophonieBundle:Strategie',
                 'property' => 'Nom',
                 'multiple' => false,
-                'query_builder' => function(StrategieRepository $er) {
+                'query_builder' => function (StrategieRepository $er) {
 
                     return $er->createQueryBuilder('strategie')
                         ->where("strategie.nom != 'Aléatoire'");
