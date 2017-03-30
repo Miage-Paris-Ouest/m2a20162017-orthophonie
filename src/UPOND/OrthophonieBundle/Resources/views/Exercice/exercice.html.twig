@@ -46,19 +46,19 @@
                             </div>
                         </div>
 
-                        {% if TypeAffichage == "Nom" %}
+
                             {% if afficherSon == true %}
                                 <div class="col-xs-12 bottom text-center">
                                     <div class="col-xs-12 col-sm-12 emphasis">
                                         <!--<audio controls style="width: 100%">
                                             <source src="" type="audio/mpeg">
                                                     Votre navigateur internet ne supporte pas l'élément audio.
-                                        </audio>--><button class="helper btn btn-info" type="button" title="{{ multimedia.getSon }}" >Indice</button>
-
+                                        </audio>-->
+                                        <button class="helper btn btn-info" type="button" title="{{ multimedia.getSon }}" >Indice</button>
                                     </div>
                                 </div>
                             {% endif %}
-                        {% endif %}
+
 
                     </div>
                 </div>
@@ -121,7 +121,7 @@
 
 
 {% block javascripts_complement %}
-
+    <script type="application/javascript" src="{{ asset("assets/js/jquery.countdown360.js") }}"></script>
     <script>(function(window, location) {
             history.replaceState(null, document.title, location.pathname+"#!/history");
             history.pushState(null, document.title, location.pathname);
@@ -139,7 +139,7 @@
     <script type="text/javascript" charset="utf-8">
         var countdown =  $("#countdown").countdown360({
             radius      : 60,
-            seconds     : {% if TypeAffichage == "Exercice" %} {{ exercice.getTempsExercice }} {% endif %} {% if TypeAffichage == "PauseVideo" %} {{ PauseVideo.getDuree + 10 }} {% endif %},
+            seconds     : {% if TypeAffichage == "Exercice" %} {{ exercice.getTempsExercice }} {% endif %} {% if TypeAffichage == "PauseVideo" %} {{ PauseVideo.getDuree + 15 }} {% endif %},
             fontColor   : '#FFFFFF',
             autostart   : false,
             onComplete  : function () { {% if TypeAffichage == "Exercice" %} $('#form_MauvaiseReponse').click(); {% endif %} {% if TypeAffichage == "PauseVideo" %} $('#form_BonneReponse').click(); {% endif %} }
