@@ -14,5 +14,5 @@ before_script:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS orthophonie;'  
-  - mysql -u root --default-character-set=utf8 baladay < orthophonie.sql
+  - mysql -u root --default-character-set=utf8 orthophonie < orthophonie.sql
   
