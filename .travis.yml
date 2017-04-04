@@ -13,6 +13,6 @@ before_script:
   - php composer.phar install
 
 before_install:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS baladay;'  
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS orthophonie;'  
   - mysql -u root --default-character-set=utf8 baladay < orthophonie.sql
   
