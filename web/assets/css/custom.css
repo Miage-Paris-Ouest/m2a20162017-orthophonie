@@ -69,7 +69,7 @@
 .nav-sm .nav.side-menu li a i {
   font-size: 25px !important;
   text-align: center;
-  width: 100% !important;
+  width: 100%;
   margin-bottom: 5px; }
 
 .nav-sm ul.nav.child_menu {
@@ -277,44 +277,44 @@ body .container.body .right_col {
   border-color: #9CC2CB !important; }
 
 .border-red {
-  border-color: #E74C3C !important; }
+  border-color: #E74C3C; }
 
 .border-dark {
-  border-color: #34495E !important; }
+  border-color: #34495E ; }
 
 .bg-white {
-  background: #fff !important;
-  border: 1px solid #fff !important;
+  background: #fff ;
+  border: 1px solid #fff ;
   color: #73879C; }
 
 .bg-green {
-  background: #1ABB9C !important;
-  border: 1px solid #1ABB9C !important;
+  background: #1ABB9C;
+  border: 1px solid #1ABB9C ;
   color: #fff; }
 
 .bg-red {
-  background: #E74C3C !important;
-  border: 1px solid #E74C3C !important;
+  background: #E74C3C;
+  border: 1px solid #E74C3C;
   color: #fff; }
 
 .bg-blue {
-  background: #3498DB !important;
-  border: 1px solid #3498DB !important;
+  background: #3498DB ;
+  border: 1px solid #3498DB ;
   color: #fff; }
 
 .bg-orange {
-  background: #F39C12 !important;
-  border: 1px solid #F39C12 !important;
+  background: #F39C12 ;
+  border: 1px solid #F39C12;
   color: #fff; }
 
 .bg-purple {
-  background: #9B59B6 !important;
-  border: 1px solid #9B59B6 !important;
+  background: #9B59B6 ;
+  border: 1px solid #9B59B6;
   color: #fff; }
 
 .bg-blue-sky {
-  background: #50C1CF !important;
-  border: 1px solid #50C1CF !important;
+  background: #50C1CF;
+  border: 1px solid #50C1CF;
   color: #fff; }
 
 .container {
