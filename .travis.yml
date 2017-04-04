@@ -16,10 +16,3 @@ before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS orthophonie;'  
   - mysql -u root --default-character-set=utf8 orthophonie < orthophonie.sql
   
-  env:
-  global:
-    - "FTP_USER=root"
-    - "FTP_PASSWORD=root"
-after_success:
-    "curl --ftp-create-dirs -T uploadfilename -u $FTP_USER:$FTP_PASSWORD ftp://176.159.0.42/home/oracle/myfile"
-  
