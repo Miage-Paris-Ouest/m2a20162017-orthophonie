@@ -99,22 +99,15 @@ class RessourcesManagerController extends Controller
                     "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
                 ));
         
-        if ($_FILES['audio']['error'] > 0)
-            return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
-                array("action" => "Create",
-                    "strategies_opt" => $list_strategie,
-                    "erreur_audio" =>  $error_tab[$_FILES['audio']['error']],
-                    "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
-                ));
+      
 
 
         $img_extensions_valides = array( 'jpg' , 'jpeg' , 'png');
-        $audio_extensions_valides = array( 'mp3');
+       
         //1. strrchr renvoie l'extension avec le point (« . »).
         //2. substr(chaine,1) ignore le premier caractère de chaine.
         //3. strtolower met l'extension en minuscules.
         $img_extension_upload = strtolower(  substr(  strrchr($_FILES['img']['name'], '.')  ,1)  );
-        $audio_extension_upload = strtolower(  substr(  strrchr($_FILES['audio']['name'], '.')  ,1)  );
 
         if ( !in_array($img_extension_upload,$img_extensions_valides) )
             return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
@@ -123,15 +116,7 @@ class RessourcesManagerController extends Controller
                     "erreur_img" => "Extension non valide",
                     "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
                 ));
-        if ( !in_array($audio_extension_upload,$audio_extensions_valides) )
-            return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
-                array("action" => "Create",
-                    "strategies_opt" => $list_strategie,
-                    "erreur_audio" =>  "Extension non valide",
-                    "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
-                ));
-
-
+       
         $obj_strategie= $strategie->findBy(
             array('idStrategie' => $_POST['strategie']))[0];
 
@@ -140,16 +125,12 @@ class RessourcesManagerController extends Controller
         $resultat_img = move_uploaded_file($_FILES['img']['tmp_name'],$image);
         if ($resultat_img) $success_message.= "ajout image réussi<br>";
 
-        $audio = "Banque images et sons/Sons/".$obj_strategie->getNomSimple()."/".$_POST['nom'].".".$audio_extension_upload;
-        $resultat_audio = move_uploaded_file($_FILES['audio']['tmp_name'],$audio);
-        if ($resultat_audio) $success_message.= "ajout son réussi<br>";
-
         // ajout de l'utilisateur dans la table patient
         $multimedia = new Multimedia();
         $multimedia->setImage($image);
         $multimedia->setNom($_POST['nom']);
         $multimedia->setStrategie($obj_strategie);
-        $multimedia->setSon($audio);
+        $multimedia->setSon($_POST['audio']);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($multimedia);
@@ -219,16 +200,6 @@ class RessourcesManagerController extends Controller
                     "erreur_img" => $error_tab[$_FILES['img']['error']],
                     "action_path" => "upond_orthophonie_administration_ressources_manager_images_update_do",
                     "obj_multimedia" => $obj_multimedia));
-        if ($_FILES['audio']['error'] == UPLOAD_ERR_INI_SIZE ||
-            $_FILES['audio']['error'] == UPLOAD_ERR_FORM_SIZE ||
-            $_FILES['audio']['error'] == UPLOAD_ERR_PARTIAL)
-            return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
-                array("action" => "Update",
-                    "strategies_opt" => $list_strategie,
-                    "erreur_audio" =>  $error_tab[$_FILES['audio']['error']],
-                    "action_path" => "upond_orthophonie_administration_ressources_manager_images_update_do",
-                    "obj_multimedia" => $obj_multimedia));
-
 
         $obj_strategie= $strategie->findBy(
             array('idStrategie' => $request->request->get('strategie')))[0];
@@ -237,6 +208,9 @@ class RessourcesManagerController extends Controller
             $obj_multimedia->setNom($request->request->get('nom'));
         if($request->request->get('strategie'))
             $obj_multimedia->setStrategie($obj_strategie);
+        if($request->request->get('audio'))
+          	$obj_multimedia->setSon($request->request->get('audio'));
+            
         if($_FILES['img']['error'] != UPLOAD_ERR_NO_FILE){
             $img_extensions_valides = array( 'jpg' , 'jpeg' , 'png');
             //1. strrchr renvoie l'extension avec le point (« . »).
@@ -255,24 +229,7 @@ class RessourcesManagerController extends Controller
             $resultat_img = move_uploaded_file($_FILES['img']['tmp_name'],$image);
             if ($resultat_img) $success_message.= "Modification Image réussi<br>";
         }
-        if($_FILES['audio']['error'] != UPLOAD_ERR_NO_FILE) {
-            $audio_extensions_valides = array('mp3');
-            //1. strrchr renvoie l'extension avec le point (« . »).
-            //2. substr(chaine,1) ignore le premier caractère de chaine.
-            //3. strtolower met l'extension en minuscules.
-            $audio_extension_upload = strtolower(substr(strrchr($_FILES['audio']['name'], '.'), 1));
-            if (!in_array($audio_extension_upload, $audio_extensions_valides))
-                return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
-                    array("action" => "Update",
-                        "strategies_opt" => $list_strategie,
-                        "erreur_audio" => "Extension non valide",
-                        "action_path" => "upond_orthophonie_administration_ressources_manager_images_update_do",
-                        "obj_multimedia" => $obj_multimedia));
-
-            $audio = "Banque images et sons/Sons/" . $obj_strategie->getNomSimple() . "/" .$obj_multimedia->getNom(). "." . $audio_extension_upload;
-            $resultat_audio = move_uploaded_file($_FILES['audio']['tmp_name'], $audio);
-            if ($resultat_audio) $success_message .= "Modification Audio réussi<br>";
-        }
+   
         $success_message.= "Multimedia resussi";
         //FIN TEST FICHIERS CONFORMES
         return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',

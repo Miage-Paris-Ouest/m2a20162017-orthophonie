@@ -53,7 +53,7 @@
         {% for multimedia in listMultimedias %}
             <tr>
                 <td>
-                    <img src="{{ asset(multimedia.getImage) }}" height="150px" class=""/>
+                    <img src="{{ asset(multimedia.getImage) }}" height="200px" class=""/>
                     <input class="" type="hidden" name="image[]" value="{{ multimedia.getIDMultimedia }}">
                 </td>
                 <td>{{ multimedia.getStrategie.getNom }}</td>
