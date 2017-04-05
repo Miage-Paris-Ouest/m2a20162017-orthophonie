@@ -54,7 +54,7 @@ class RessourcesManagerController extends Controller
 
         $listStrategie = $StrategieRepository->findAll();
         //print_r(var_dump($MultimediaRepository));
-        return $this->render('UPONDOrthophonieBundle:Administration:medias_list.html.twig', array('listMultimedias' => $listMultimedia,'listStrategie'=>$listStrategie));
+        return $this->render('UPONDOrthophonieBundle:RessourceManager:medias_list.html.twig', array('listMultimedias' => $listMultimedia,'listStrategie'=>$listStrategie));
     }
     public function imagesCreateAction(Request $request){
 
@@ -66,7 +66,7 @@ class RessourcesManagerController extends Controller
         $strategie = $em->getRepository('UPONDOrthophonieBundle:Strategie');
         $list_strategie= $strategie->findAll();
         //print_r(var_dump($MultimediaRepository));
-        return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
+        return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
             array("action" => "Create",
                 "strategies_opt" => $list_strategie,
                 "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
@@ -92,7 +92,7 @@ class RessourcesManagerController extends Controller
         );
 
         if ($_FILES['img']['error'] > 0)
-            return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
+            return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
                 array("action" => "Create",
                     "strategies_opt" => $list_strategie,
                     "erreur_img" => $error_tab[$_FILES['img']['error']],
@@ -110,7 +110,7 @@ class RessourcesManagerController extends Controller
         $img_extension_upload = strtolower(  substr(  strrchr($_FILES['img']['name'], '.')  ,1)  );
 
         if ( !in_array($img_extension_upload,$img_extensions_valides) )
-            return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
+            return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
                 array("action" => "Create",
                     "strategies_opt" => $list_strategie,
                     "erreur_img" => "Extension non valide",
@@ -138,7 +138,7 @@ class RessourcesManagerController extends Controller
 
         $success_message.= "Multimedia resussi";
         //FIN TEST FICHIERS CONFORMES
-        return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
+        return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
             array("action" => "Create",
                 "strategies_opt" => $list_strategie,
                 "success_message"=>$success_message,
@@ -161,7 +161,7 @@ class RessourcesManagerController extends Controller
         $multimedia = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
         $obj_multimedia= $multimedia->findOneBy(array('idMultimedia' => $request->query->get('media_id')));
 
-        return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
+        return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
             array("action" => "Update",
                 "strategies_opt" => $list_strategie,
                 "obj_multimedia" => $obj_multimedia,
@@ -194,7 +194,7 @@ class RessourcesManagerController extends Controller
             $_FILES['img']['error'] == UPLOAD_ERR_FORM_SIZE ||
             $_FILES['img']['error'] == UPLOAD_ERR_PARTIAL
         )
-            return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
+            return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
                 array("action" => "Update",
                     "strategies_opt" => $list_strategie,
                     "erreur_img" => $error_tab[$_FILES['img']['error']],
@@ -218,7 +218,7 @@ class RessourcesManagerController extends Controller
             //3. strtolower met l'extension en minuscules.
             $img_extension_upload = strtolower(  substr(  strrchr($_FILES['img']['name'], '.')  ,1)  );
             if ( !in_array($img_extension_upload,$img_extensions_valides) )
-                return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
+                return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
                     array("action" => "Update",
                         "strategies_opt" => $list_strategie,
                         "erreur_img" => "Extension non valide",
@@ -232,7 +232,7 @@ class RessourcesManagerController extends Controller
    
         $success_message.= "Multimedia resussi";
         //FIN TEST FICHIERS CONFORMES
-        return $this->render('UPONDOrthophonieBundle:Administration:media_create_update.html.twig',
+        return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
             array("action" => "Update",
                 "strategies_opt" => $list_strategie,
                 "success_message"=>$success_message,
