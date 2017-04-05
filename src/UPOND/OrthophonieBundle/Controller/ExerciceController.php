@@ -27,7 +27,6 @@ class ExerciceController extends Controller
     {
         // On crée le FormBuilder grâce au service form factory
         $formBuilder = $this->get('form.factory')->createBuilder(FormType::class);
-
         // On ajoute les champs que l'on veut à notre formulaire
         $formBuilder
             ->add('Partie', 'entity', array(
@@ -38,9 +37,7 @@ class ExerciceController extends Controller
                     $em = $this
                         ->getDoctrine()
                         ->getManager();
-                    $repositoryPatient = $em
-                        ->getRepository('UPONDOrthophonieBundle:Patient')
-                    ;
+                    $repositoryPatient = $em->getRepository('UPONDOrthophonieBundle:Patient');
                     $utilisateur = $this->container->get('security.context')->getToken()->getUser();
                     $patient = $repositoryPatient->findOneByUtilisateur($utilisateur);
 
@@ -59,17 +56,12 @@ class ExerciceController extends Controller
 
         // si on valide le formulaire
         if ($form->handleRequest($request)->isValid()) {
-
-            $em = $this
-                ->getDoctrine()
-                ->getManager();
-
-            $repository = $em
-                ->getRepository('UPONDOrthophonieBundle:Strategie')
-            ;
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('UPONDOrthophonieBundle:Strategie');
 
             $donneesForm = $form->getData();
             $session = $request->getSession();
+
             // stocker une variable de session pour la partie
             $session->set('partie', $donneesForm['Partie']);
             // on créé une variable session pour savoir si on doit afficher toutes les etapes jusqu'a une etape précise, ou bien juste une seule étape
@@ -79,25 +71,22 @@ class ExerciceController extends Controller
             $strategie = $repository->findOneByNom($request->attributes->get('strategie'));
             $session->set('strategie', $strategie);
 
-
             if($request->attributes->get('phase') != null) {
                 // on stocke la phase (pour la phase de transfert et entrainement niveau 2 uniquement puisque route directement ici)
-                $repositoryPhase = $em
-                    ->getRepository('UPONDOrthophonieBundle:Phase')
-                ;
+
+                $repositoryPhase = $em->getRepository('UPONDOrthophonieBundle:Phase');
                 $phase = $repositoryPhase->findOneByNom($request->attributes->get('phase'));
                 $session->set('phase', $phase);
                 $session->set('niveau', $request->attributes->get('niveau'));
 
             }
 
-            if($session->get('phase')->getNom() == "Apprentissage" && $session->get('niveau') == "1")
+            if($session->get('phase')->getNom() != "Transfert")
             {
                 $session->set('afficherSon', true);
             } else {
                 $session->set('afficherSon', false);
             }
-
 
             $session->set('TypeAffichage', "Nom");
 
@@ -108,20 +97,19 @@ class ExerciceController extends Controller
         return $this->render('UPONDOrthophonieBundle:Partie:selectPartie.html.twig', array( 'form' => $form->createView()));
     }
 
+    //upond_orthophonie_exercice
     public function afficherExerciceAction(Request $request)
     {
         $session = $request->getSession();
-
         // on recupere l'exercice associée a la strategie, la phase, le niveau et la partie
         $em = $this->getDoctrine()->getManager();
+
         $ExerciceRepository = $em->getRepository('UPONDOrthophonieBundle:Exercice');
         $EtapeRepository = $em->getRepository('UPONDOrthophonieBundle:Etape');
         $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
         $PauseVideoRepository = $em->getRepository('UPONDOrthophonieBundle:PauseVideo');
 
         $exercice = $ExerciceRepository->getExerciceByPartiePhaseStrategieNiveau($session->get('partie'), $session->get('phase'), $session->get('strategie'), $session->get('niveau'));
-
-        // dump($exercice);
 
         // on recupere l'etape courante de l'exercice
         $etapeCourante = $exercice->getEtapeCourante();
@@ -146,14 +134,11 @@ class ExerciceController extends Controller
         $form = $formBuilder->getForm();
         // si on clique un des deux boutons de validation, on ajoute la bonne/mauvaise réponse dans la base
         if ($form->handleRequest($request)->isValid()) {
-
-
             // si c'est le bouton "Bonne réponse", on passe a l'etape suivante
             if ($form->get('BonneReponse')->isClicked()) {
                 // si la variable de session est PauseVideo
                 if ($session->get('TypeAffichage') == "PauseVideo")
                 {
-                    
                     $session->set('TypeAffichage', "Exercice");
                     return $this->render('UPONDOrthophonieBundle:Exercice:exercice.html.twig', array('multimedias' => $multimedias, 'exercice' => $exercice, 'TypeAffichage' => $session->get('TypeAffichage'), 'afficherSon' => $session->get('afficherSon'), 'form' => $form->createView()));
 

@@ -44,7 +44,7 @@ class PartieController extends Controller
         $formBuilder
             ->add('Patient', 'entity', array(
                 'class'    => 'UPONDOrthophonieBundle:Patient',
-                'property' => 'NomEtPrenom',
+                'property' => 'PrenomEtNom',
                 'multiple' => false,
                 'attr' => array('class' => 'form-control')
             ))
@@ -69,11 +69,8 @@ class PartieController extends Controller
         // À partir du formBuilder, on génère le formulaire
         $form = $formBuilder->getForm();
 
-
         // si on valide le formulaire
         if ($form->handleRequest($request)->isValid()) {
-
-
             //transformer la saisie heure/min/secondes en secondes uniquement
             $donneesForm = $form->getData();
             sscanf($donneesForm['TempsEntrainement']->format('H:i:s'), "%d:%d:%d", $hours, $minutes, $seconds);
@@ -85,14 +82,10 @@ class PartieController extends Controller
             $time_seconds_transfert = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
 
             // on initalise nos repositories
-            $em = $this
-                ->getDoctrine()
-                ->getManager();
+            $em = $this->getDoctrine()->getManager();
 
-            $repositoryPhase = $em
-                ->getRepository('UPONDOrthophonieBundle:Phase');
-            $repositoryStrategie = $em
-                ->getRepository('UPONDOrthophonieBundle:Strategie');
+            $repositoryPhase = $em->getRepository('UPONDOrthophonieBundle:Phase');
+            $repositoryStrategie = $em->getRepository('UPONDOrthophonieBundle:Strategie');
 
             // on récupere l'entité du patient
             $patient = $donneesForm['Patient'];
@@ -298,10 +291,8 @@ class PartieController extends Controller
 
     public function initializeExerciceApprentissage($exercice, $phase, $strategie, $partie, $niveau)
     {
-
         $em = $this->getDoctrine()->getManager();
         $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
-
         $exercice->setNbBonneReponse(0);
         $exercice->setNbQuestionValidee(0);
         $exercice->setPartie($partie);
@@ -310,7 +301,6 @@ class PartieController extends Controller
         $exercice->setPhase($phase);
         $exercice->setDateCreation(new \DateTime());
         $i = 1;
-
         $listMultimedia = $MultimediaRepository->get7MultimediaAleatoire($strategie);
         foreach($listMultimedia as $multimedia)
         {
@@ -326,7 +316,6 @@ class PartieController extends Controller
                 $em->persist($etape);
                 $exercice->addEtape($etape);
                 $i++;
-
 
                 //on ajoute une nouvelle etape avec les multimedias du début jusqu'au multimedia courant
                 $etape2 = new Etape();

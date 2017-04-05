@@ -204,4 +204,7 @@ class Patient
     public function getNomEtPrenom() {
         return $this->utilisateur->getNom().' '.$this->utilisateur->getPrenom();
     }
+    public function getPrenomEtNom() {
+        return $this->utilisateur->getPrenom().' '.$this->utilisateur->getNom();
+    }
 }
