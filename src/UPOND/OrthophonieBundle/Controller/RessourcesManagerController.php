@@ -242,31 +242,40 @@ class RessourcesManagerController extends Controller
     }
     
     public function imagesEditUpdateSimpleAction(Request $request){
-
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
         }
-
-
         if($request->getMethod() == 'POST') {
-
-
             $em = $this->getDoctrine()->getManager();
             $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
-
             // on recupere l'id utilisateur via le formulaire POST pr�c�dent
             $idMultimedias = $_POST['image'];
-            $idSon = $_POST['son'];
+            $idApprentissage = $_POST['apprentissage'];
+            $idEntrainement = $_POST['entrainement'];
             $textmedia = $_POST['text'];
             // on r�cup�re le patient
             foreach($idMultimedias as $k=>$idm){
                 $actualmedia = $MultimediaRepository->find($idm);
                 $actualmedia->setNom($textmedia[$k]);
-                $actualmedia->setIndiceApprentissage($idSon[$k]);
+                $actualmedia->setIndiceApprentissage($idApprentissage[$k]);
+                $actualmedia->setIndiceEntrainement($idEntrainement[$k]);
             }
 
             $em->flush();
         }
+        return $this->forward("UPONDOrthophonieBundle:RessourcesManager:imagesEdit");
+    }
+    public function imagesDeleteAction(Request $request){
+        if ($request->getSession()->get('role') != 'medecin') {
+            return $this->redirectToRoute('upond_orthophonie_home');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $multimedia = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
+        $obj_multimedia= $multimedia->find(array('idMultimedia' => $request->request->get('media_id')));
+        $em->remove($obj_multimedia);
+        $em->flush();
 
         return $this->forward("UPONDOrthophonieBundle:RessourcesManager:imagesEdit");
     }
