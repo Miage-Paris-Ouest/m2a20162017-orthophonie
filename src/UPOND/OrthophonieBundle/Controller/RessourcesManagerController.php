@@ -265,6 +265,7 @@ class RessourcesManagerController extends Controller
         }
         return $this->forward("UPONDOrthophonieBundle:RessourcesManager:imagesEdit");
     }
+
     public function imagesDeleteAction(Request $request){
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
