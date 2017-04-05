@@ -372,7 +372,7 @@ class AdministrationController extends Controller
             $cheminSon = "/Banque images et sons/Sons/" . $nomFichier;
 
             $multimedia->setImage($cheminImage);
-            $multimedia->setSon($cheminSon);
+            $multimedia->setIndiceApprentissage($cheminSon);
             // on ajoute le nouveau multimedia dans la base
             $em->persist($multimedia);
             $em->flush();

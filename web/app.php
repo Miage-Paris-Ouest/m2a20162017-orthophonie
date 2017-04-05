@@ -19,7 +19,7 @@ $apcLoader->register(true);
 */
 
 // JFPP $kernel = new AppKernel('prod', false);
-$kernel = new AppKernel('dev', false);
+$kernel = new AppKernel('dev', true);
 
 
 $kernel->loadClassCache();

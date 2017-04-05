@@ -130,7 +130,7 @@ class RessourcesManagerController extends Controller
         $multimedia->setImage($image);
         $multimedia->setNom($_POST['nom']);
         $multimedia->setStrategie($obj_strategie);
-        $multimedia->setSon($_POST['audio']);
+        $multimedia->setIndiceApprentissage($_POST['audio']);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($multimedia);
@@ -209,7 +209,7 @@ class RessourcesManagerController extends Controller
         if($request->request->get('strategie'))
             $obj_multimedia->setStrategie($obj_strategie);
         if($request->request->get('audio'))
-          	$obj_multimedia->setSon($request->request->get('audio'));
+          	$obj_multimedia->setIndiceApprentissage($request->request->get('audio'));
             
         if($_FILES['img']['error'] != UPLOAD_ERR_NO_FILE){
             $img_extensions_valides = array( 'jpg' , 'jpeg' , 'png');
@@ -262,7 +262,7 @@ class RessourcesManagerController extends Controller
             foreach($idMultimedias as $k=>$idm){
                 $actualmedia = $MultimediaRepository->find($idm);
                 $actualmedia->setNom($textmedia[$k]);
-                $actualmedia->setSon($idSon[$k]);
+                $actualmedia->setIndiceApprentissage($idSon[$k]);
             }
 
             $em->flush();

@@ -40,9 +40,15 @@ class Multimedia
     /**
      * @var string
      *
-     * @ORM\Column(name="son", type="string", length=150, nullable=true)
+     * @ORM\Column(name="indice_apprentissage", type="string", length=150, nullable=true)
      */
-    private $son;
+    private $indice_apprentissage;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="indice_entrainement", type="string", length=150, nullable=true)
+     */
+    private $indice_entrainement;
 
     /**
      * @ORM\ManyToOne(targetEntity="UPOND\OrthophonieBundle\Entity\Strategie", inversedBy="multimedias")
@@ -116,28 +122,38 @@ class Multimedia
     }
 
     /**
-     * Set son
-     *
-     * @param string $son
-     *
-     * @return Multimedia
+     * @return string
      */
-    public function setSon($son)
+    public function getIndiceApprentissage()
     {
-        $this->son = $son;
-
-        return $this;
+        return $this->indice_apprentissage;
     }
 
     /**
-     * Get son
-     *
+     * @param string $indice_apprentissage
+     */
+    public function setIndiceApprentissage($indice_apprentissage)
+    {
+        $this->indice_apprentissage = $indice_apprentissage;
+    }
+
+    /**
      * @return string
      */
-    public function getSon()
+    public function getIndiceEntrainement()
     {
-        return $this->son;
+        return $this->indice_entrainement;
     }
+
+    /**
+     * @param string $indice_entrainement
+     */
+    public function setIndiceEntrainement($indice_entrainement)
+    {
+        $this->indice_entrainement = $indice_entrainement;
+    }
+
+
 
     /**
      * Set strategie
