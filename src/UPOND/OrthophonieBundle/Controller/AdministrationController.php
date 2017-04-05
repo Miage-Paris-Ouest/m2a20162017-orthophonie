@@ -209,7 +209,7 @@ class AdministrationController extends Controller
         return $this->render('UPONDOrthophonieBundle:Administration:medecins.html.twig', array('listPatients' => $listPatients, 'listUtilisateurs' => $listUtilisateurs, 'listMedecins' => $listMedecins));
     }
 
-    public function exercicesAction()
+    /*public function exercicesAction()
     {
         $request = $this->container->get('request');
         if ($request->getSession()->get('role') != 'medecin') {
@@ -298,7 +298,7 @@ class AdministrationController extends Controller
 
         $listMultimedias = $MultimediaRepository->findAll();
         return $this->render('UPONDOrthophonieBundle:Administration:exercices.html.twig', array('listMultimedias' => $listMultimedias));
-    }
+    }*/
 
     public function exerciceFormAction(Request $request)
     {

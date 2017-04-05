@@ -42,13 +42,13 @@ upond_orthophonie_administration_medecin:
     path:      /medecins
     defaults:  { _controller: UPONDOrthophonieBundle:Administration:medecins }
 
-upond_orthophonie_administration_exercice:
-    path:      /exercices
-    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercices }
+#upond_orthophonie_administration_exercice:
+#    path:      /exercices
+#    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercices }
 
-upond_orthophonie_multimedia:
-    path:      /Banque_images_et_sons
-    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercices }
+#upond_orthophonie_multimedia:
+#    path:      /Banque_images_et_sons
+#    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercices }
 
 upond_orthophonie_administration_medecin_ajout:
     path:      /ajout_medecin
@@ -58,17 +58,17 @@ upond_orthophonie_administration_medecin_retirer:
     path:      /retirer_medecin
     defaults:  { _controller: UPONDOrthophonieBundle:Administration:medecinsRetirer }
 
-upond_orthophonie_administration_exercice_ajouter:
-    path:      /ajouter_exercice
-    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesAjouter }
+#upond_orthophonie_administration_exercice_ajouter:
+#    path:      /ajouter_exercice
+#    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesAjouter }
 
-upond_orthophonie_administration_exercice_modifier:
-    path:      /modifier_exercice
-    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesModifier }
+#upond_orthophonie_administration_exercice_modifier:
+#    path:      /modifier_exercice
+#    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesModifier }
 
-upond_orthophonie_administration_exercice_supprimer:
-    path:      /supprimer_exercice
-    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesSupprimer }
+#upond_orthophonie_administration_exercice_supprimer:
+#    path:      /supprimer_exercice
+#    defaults:  { _controller: UPONDOrthophonieBundle:Administration:exercicesSupprimer }
 
 upond_orthophonie_administration_exercice_form:
     path:      /form_exercice
