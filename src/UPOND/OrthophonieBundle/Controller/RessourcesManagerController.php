@@ -48,7 +48,7 @@ class RessourcesManagerController extends Controller
         return $this->render('UPONDOrthophonieBundle:RessourceManager:media_create_update.html.twig',
             array("action" => "Create",
                 "strategies_opt" => $list_strategie,
-                "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
+                "action_path" => "upond_orthophonie_ressources_manager_images_create_do"
             ));
     }
 
@@ -75,7 +75,7 @@ class RessourcesManagerController extends Controller
                 array("action" => "Create",
                     "strategies_opt" => $list_strategie,
                     "erreur_img" => $error_tab[$_FILES['img']['error']],
-                    "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
+                    "action_path" => "upond_orthophonie_ressources_manager_images_create_do"
                 ));
         
       
@@ -93,7 +93,7 @@ class RessourcesManagerController extends Controller
                 array("action" => "Create",
                     "strategies_opt" => $list_strategie,
                     "erreur_img" => "Extension non valide",
-                    "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
+                    "action_path" => "upond_orthophonie_ressources_manager_images_create_do"
                 ));
        
         $obj_strategie= $strategie->findBy(
@@ -121,7 +121,7 @@ class RessourcesManagerController extends Controller
             array("action" => "Create",
                 "strategies_opt" => $list_strategie,
                 "success_message"=>$success_message,
-                "action_path" => "upond_orthophonie_administration_ressources_manager_images_creation_do"
+                "action_path" => "upond_orthophonie_ressources_manager_images_create_do"
             ));
     }
 
@@ -144,7 +144,7 @@ class RessourcesManagerController extends Controller
             array("action" => "Update",
                 "strategies_opt" => $list_strategie,
                 "obj_multimedia" => $obj_multimedia,
-                "action_path" => "upond_orthophonie_administration_ressources_manager_images_update_do"
+                "action_path" => "upond_orthophonie_ressources_manager_images_update_do"
                 ));
     }
 
@@ -177,7 +177,7 @@ class RessourcesManagerController extends Controller
                 array("action" => "Update",
                     "strategies_opt" => $list_strategie,
                     "erreur_img" => $error_tab[$_FILES['img']['error']],
-                    "action_path" => "upond_orthophonie_administration_ressources_manager_images_update_do",
+                    "action_path" => "upond_orthophonie_ressources_manager_images_update_do",
                     "obj_multimedia" => $obj_multimedia));
 
         $obj_strategie= $strategie->findBy(
@@ -201,7 +201,7 @@ class RessourcesManagerController extends Controller
                     array("action" => "Update",
                         "strategies_opt" => $list_strategie,
                         "erreur_img" => "Extension non valide",
-                        "action_path" => "upond_orthophonie_administration_ressources_manager_images_update_do",
+                        "action_path" => "upond_orthophonie_ressources_manager_images_update_do",
                         "obj_multimedia" => $obj_multimedia));
 
             $image = "Banque images et sons/Images/".$obj_strategie->getNomSimple()."/".$obj_multimedia->getNom().".".$img_extension_upload;
@@ -215,7 +215,7 @@ class RessourcesManagerController extends Controller
             array("action" => "Update",
                 "strategies_opt" => $list_strategie,
                 "success_message"=>$success_message,
-                "action_path" => "upond_orthophonie_administration_ressources_manager_images_update_do",
+                "action_path" => "upond_orthophonie_ressources_manager_images_update_do",
                 "obj_multimedia" => $obj_multimedia
                 ));
     }
