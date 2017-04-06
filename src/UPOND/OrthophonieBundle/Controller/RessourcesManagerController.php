@@ -7,29 +7,9 @@
  */
 
 namespace UPOND\OrthophonieBundle\Controller;
-
-
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-//use Symfony\Component\BrowserKit\Request;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\SubmitButton;
-use Symfony\Component\HttpKernel\Kernel;
-use UPOND\OrthophonieBundle\Entity\Medecin;
 use UPOND\OrthophonieBundle\Entity\Multimedia;
-use UPOND\OrthophonieBundle\Entity\Patient;
-use UPOND\OrthophonieBundle\Entity\Utilisateur;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
-use UPOND\OrthophonieBundle\Form\UserSearchType;
-use UPOND\OrthophonieBundle\Repository\StrategieRepository;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-
-use Symfony\Bridge\Twig\Extension\AssetExtension;
 
 class RessourcesManagerController extends Controller
 {
@@ -38,9 +18,7 @@ class RessourcesManagerController extends Controller
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
         }
-        // on recupere l'exercice associ�e a la strategie, la phase, le niveau et la partie
-        $page = isset($_GET['page'])?$_GET['page']:1;
-        //$pag = new Paginator();
+
         $em = $this->getDoctrine()->getManager();
         $MultimediaRepository = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
         $StrategieRepository= $em->getRepository('UPONDOrthophonieBundle:Strategie');
@@ -56,6 +34,7 @@ class RessourcesManagerController extends Controller
         //print_r(var_dump($MultimediaRepository));
         return $this->render('UPONDOrthophonieBundle:RessourceManager:medias_list.html.twig', array('listMultimedias' => $listMultimedia,'listStrategie'=>$listStrategie));
     }
+
     public function imagesCreateAction(Request $request){
 
         if ($request->getSession()->get('role') != 'medecin') {
@@ -270,14 +249,30 @@ class RessourcesManagerController extends Controller
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
         }
-
         $em = $this->getDoctrine()->getManager();
-
         $multimedia = $em->getRepository('UPONDOrthophonieBundle:Multimedia');
-        $obj_multimedia= $multimedia->find(array('idMultimedia' => $request->request->get('media_id')));
+        $obj_multimedia= $multimedia->find(array('idMultimedia' => $request->query->get('media_id')));
         $em->remove($obj_multimedia);
         $em->flush();
 
         return $this->forward("UPONDOrthophonieBundle:RessourcesManager:imagesEdit");
+    }
+
+    public function  videosEditAction(Request $request){
+        if ($request->getSession()->get('role') != 'medecin') {
+            return $this->redirectToRoute('upond_orthophonie_home');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $PauseVideoRepository = $em->getRepository('UPONDOrthophonieBundle:PauseVideo');
+
+
+        $listVideos = $PauseVideoRepository->findBy(
+            array(),        // $where
+            array('idPauseVideo'=>'ASC'),    // $orderBy
+            null,                        // $limit
+            null                         // $offset
+        );
+        return $this->render('UPONDOrthophonieBundle:RessourceManager:videos_list.html.twig', array('listVideos' => $listVideos));
     }
 }
