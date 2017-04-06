@@ -10,6 +10,7 @@ namespace UPOND\OrthophonieBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use UPOND\OrthophonieBundle\Entity\Multimedia;
 use Symfony\Component\HttpFoundation\Request;
+use UPOND\OrthophonieBundle\Entity\PauseVideo;
 
 class RessourcesManagerController extends Controller
 {
@@ -258,7 +259,7 @@ class RessourcesManagerController extends Controller
         return $this->forward("UPONDOrthophonieBundle:RessourcesManager:imagesEdit");
     }
 
-    public function  videosEditAction(Request $request){
+    public function videosEditAction(Request $request){
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
         }
@@ -275,6 +276,7 @@ class RessourcesManagerController extends Controller
         );
         return $this->render('UPONDOrthophonieBundle:RessourceManager:videos_list.html.twig', array('listVideos' => $listVideos));
     }
+
     public function videosEditUpdateSimpleAction(Request $request){
         if ($request->getSession()->get('role') != 'medecin') {
             return $this->redirectToRoute('upond_orthophonie_home');
@@ -297,6 +299,44 @@ class RessourcesManagerController extends Controller
 
             $em->flush();
         }
+        return $this->forward("UPONDOrthophonieBundle:RessourcesManager:videosEdit");
+    }
+
+    public function videosCreateAction(Request $request){
+        if ($request->getSession()->get('role') != 'medecin') {
+            return $this->redirectToRoute('upond_orthophonie_home');
+        }
+        //print_r(var_dump($MultimediaRepository));
+        return $this->render('UPONDOrthophonieBundle:RessourceManager:video_create.html.twig');
+    }
+
+    public function videosCreateDoAction(Request $request){
+
+        if ($request->getSession()->get('role') != 'medecin') {
+            return $this->redirectToRoute('upond_orthophonie_home');
+        }
+        // ajout de l'utilisateur dans la table patient
+        $video = new PauseVideo();
+        $video->setURL($_POST['url']);
+        $video->setDuree($_POST['duree']);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($video);
+        $em->flush();
+        //FIN TEST FICHIERS CONFORMES
+        return $this->render('UPONDOrthophonieBundle:RessourceManager:video_create.html.twig');
+    }
+
+    public function videosDeleteAction(Request $request){
+        if ($request->getSession()->get('role') != 'medecin') {
+            return $this->redirectToRoute('upond_orthophonie_home');
+        }
+        $em = $this->getDoctrine()->getManager();
+        $PauseVideo = $em->getRepository('UPONDOrthophonieBundle:PauseVideo');
+        $obj_PauseVideo= $PauseVideo->find(array('idPauseVideo' => $request->query->get('video_id')));
+        $em->remove($obj_PauseVideo);
+        $em->flush();
+
         return $this->forward("UPONDOrthophonieBundle:RessourcesManager:videosEdit");
     }
 }

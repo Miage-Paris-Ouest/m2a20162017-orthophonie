@@ -1,0 +1,64 @@
+
+
+{% extends "UPONDOrthophonieBundle::layout.html.twig" %}
+
+{% block title %}
+    Création/Modification médias - {{ parent() }}
+{% endblock %}
+
+{% block orthophonie_body %}
+
+<div name="intitule">
+    <h1>Ajout d'une vidéo</h1>
+</div>
+    <div class="container">
+
+        <div class="row">
+            <form method="POST" action="{{ path("upond_orthophonie_ressources_manager_videos_create_do")}}" class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+
+                {% if success_message is defined %}
+                    <div class="alert alert-success" role="alert">{{ success_message }}</div>
+                {% endif %}
+
+                <h3>Vidéo</h3>
+                <input class="form-control input-lg url" name="url" value="">
+
+                <iframe width="620" height="450" class="video" src="https://twitter.com/"  frameborder="0" allowfullscreen></iframe>
+                <hr>
+                <h3>Durée</h3>
+
+                <div>
+                    <input class="form-control" type="text" name="duree" value="" placeholder="secondes..."/>
+                </div>
+
+                {% if erreur_audio is defined %}
+                    <div class="alert alert-danger" role="alert">{{ erreur_audio }}</div>
+                {% endif %}
+
+                <hr>
+
+                <input type="submit" class="btn btn-success" value="Enregistrer">
+
+            </form>
+        </div>
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block javascripts_complement %}
+
+  <script>
+      $('.url').on( 'keyup change', function () {
+          if(this.value != ""){
+              video_id = this.value.split('v=')[1];
+              video_id = video_id.split('&')[0];
+
+              embeled_link="https://www.youtube.com/embed/"+video_id;
+              this.value=embeled_link;
+              $(this).next().attr( "src",embeled_link );
+
+          }
+      } );
+   </script>
+
+{% endblock %}

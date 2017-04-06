@@ -86,6 +86,10 @@ upond_orthophonie_ressources_manager_images_edit_update_simple:
     path:      /manage_images_update_simple
     defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:imagesEditUpdateSimple }
 
+upond_orthophonie_ressources_manager_videos_delete:
+    path:      /manage_videos_delete
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:videosDelete }
+
 upond_orthophonie_ressources_manager_videos_edit:
     path:      /manage_videos
     defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:videosEdit }
@@ -94,3 +98,10 @@ upond_orthophonie_ressources_manager_videos_edit_update_simple:
     path:      /manage_videos_update_simple
     defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:videosEditUpdateSimple }
 
+upond_orthophonie_ressources_manager_videos_create:
+    path:      /manage_videos_create
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:videosCreate }
+
+upond_orthophonie_ressources_manager_videos_create_do:
+        path:      /manage_videos_create_do
+        defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:videosCreateDo }
