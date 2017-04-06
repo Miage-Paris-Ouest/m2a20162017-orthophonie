@@ -275,4 +275,28 @@ class RessourcesManagerController extends Controller
         );
         return $this->render('UPONDOrthophonieBundle:RessourceManager:videos_list.html.twig', array('listVideos' => $listVideos));
     }
+    public function videosEditUpdateSimpleAction(Request $request){
+        if ($request->getSession()->get('role') != 'medecin') {
+            return $this->redirectToRoute('upond_orthophonie_home');
+        }
+        if($request->getMethod() == 'POST') {
+            $em = $this->getDoctrine()->getManager();
+            $PauseVideoRepository = $em->getRepository('UPONDOrthophonieBundle:PauseVideo');
+            // on recupere l'id utilisateur via le formulaire POST pr�c�dent
+            $idVideo = $_POST['video'];
+            $urls = $_POST['url'];
+            $durees = $_POST['duree'];
+
+
+            // on r�cup�re le patient
+            foreach($idVideo as $k=>$idm){
+                $actualVideo = $PauseVideoRepository->find($idm);
+                $actualVideo->setURL($urls[$k]);
+                $actualVideo->setDuree($durees[$k]);
+            }
+
+            $em->flush();
+        }
+        return $this->forward("UPONDOrthophonieBundle:RessourcesManager:videosEdit");
+    }
 }

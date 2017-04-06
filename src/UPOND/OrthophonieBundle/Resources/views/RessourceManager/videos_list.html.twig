@@ -13,46 +13,29 @@
 </div>
 
     <h3>Liste des vidéos</h3>
-    <form action="{{ path('upond_orthophonie_ressources_manager_images_edit_update_simple')}}" method="POST" class="Multimedias">
-        <div class="row">
+    <form action="{{ path('upond_orthophonie_ressources_manager_videos_edit_update_simple')}}" method="POST" class="Multimedias">
 
-            <div class="col-sm-6 col-md-4 col-lg-2">
-                <input type="submit" name="validate" value="Enregister nouveaux noms" class="btn btn-success">
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2">
-                <span>Paramètre Voix </span>
-                <select class="form-control" id="voiceOptions"></select>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2">
-                <span>Paramètre Volume </span>
-                <input class="form-control" type="range" id="volumeSlider" min="0" max="1" value="0.75" step="0.1" />
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-2">
-                <span>Paramètre Vitesse </span>
-                <input class="form-control" type="range" id="rateSlider" min="0" max="1" value="0.75" step="0.1" />
-            </div>
-
-
-        </div>
     <table id="mytab" class='table table-striped container'>
         <thead>
         <th>Vidéo</th>
+        <th>Vidéo URL</th>
         <th>Durée</th>
         <th>Action</th>
         </thead>
         <tbody>
         {% for video in listVideos %}
             <tr>
-                <td>
-                    <iframe width="420" height="150" src="{{ video.getURL }}"  frameborder="0" allowfullscreen></iframe>
+                <td class="col-md-3">
+                    <iframe width="320" height="150" class="video" src="{{ video.getURL }}"  frameborder="0" allowfullscreen></iframe>
                     <input class="" type="hidden" name="video[]" value="{{ video.getIdPauseVideo }}">
                 </td>
-                <td>{{ video.getDuree }}</td>
+                <td class="col-md-4"><input class="form-control input-lg url" name="url[]" value="{{ video.getURL }}"></td>
+                <td class="col-md-2"><input class="form-control" name="duree[]" value="{{ video.getDuree }}"></td>
 
-                <td>
+                <td class="col-md-2">
                     <button type="submit" title="Modifier" class="btn btn-success"><i class="fa fa-check"></i></button>
                     <a title="Modifier média" class="btn btn-primary" href="{{ path('upond_orthophonie_ressources_manager_images_update')}}?video_id={{ video.getIdPauseVideo }}"><i class="fa fa-edit"></i></a>
-                    <a title="Supprimer média" class="btn btn-danger" href="{{ path('upond_orthophonie_ressources_manager_images_delete')}}?video_id={{ video.getIdPauseVideo }}"><i class="fa fa-times"></i></a>
+                    <!--<a title="Supprimer média" class="btn btn-danger" href="{{ path('upond_orthophonie_ressources_manager_images_delete')}}?video_id={{ video.getIdPauseVideo }}"><i class="fa fa-times"></i></a>-->
                 </td>
 
             </tr>
@@ -82,6 +65,17 @@
                         .draw();
             }
         } );
+        $('.url').on( 'keyup change', function () {
+            if(this.value != ""){
+                video_id = this.value.split('v=')[1];
+                video_id = video_id.split('&')[0];
+
+                embeled_link="https://www.youtube.com/embed/"+video_id;
+                this.value=embeled_link;
+                $(this).parent().prev().find('.video').attr( "src",embeled_link );
+
+            }
+        } );
         $('[name="ListMedecins"]').each(function () {
             idMedecin = $(this).val();
             idPatient = $(this).attr("idPatient");
@@ -96,52 +90,5 @@
     });
 
    </script>
-
-    <script type="text/javascript">
-
-        function checkCompatibilty () {
-            if(!('speechSynthesis' in window)){
-                alert('Your browser is not supported. If google chrome, please upgrade!!');
-            }
-        };
-
-        checkCompatibilty();
-        var voiceOptions = document.getElementById('voiceOptions');
-        var volumeSlider = document.getElementById('volumeSlider');
-        var rateSlider = document.getElementById('rateSlider');
-        var pitchSlider = document.getElementById('pitchSlider');
-        var myText = document.getElementById('myText');
-
-
-        var voiceMap = [];
-
-        function loadVoices () {
-            var voices = speechSynthesis.getVoices();
-            for (var i = 0; i < voices.length; i++) {
-                var voice = voices[i];
-                var option = document.createElement('option');
-                option.value = voice.name;
-                option.innerHTML = voice.name;
-                voiceOptions.appendChild(option);
-                voiceMap[voice.name] = voice;
-            };
-        };
-
-        window.speechSynthesis.onvoiceschanged = function(e){
-            loadVoices();
-        };
-
-        $(".helper").click(function () {
-            var msg = new SpeechSynthesisUtterance();
-            msg.text = $(this).prev()[0].value;
-            msg.volume = volumeSlider.value;
-            msg.voice = voiceMap[voiceOptions.value];
-            msg.rate = rateSlider.value;
-            msg.Pitch = 1;
-
-            window.speechSynthesis.speak(msg);
-        });
-
-    </script>
 
 {% endblock %}

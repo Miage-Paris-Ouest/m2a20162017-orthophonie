@@ -90,5 +90,7 @@ upond_orthophonie_ressources_manager_videos_edit:
     path:      /manage_videos
     defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:videosEdit }
 
-
+upond_orthophonie_ressources_manager_videos_edit_update_simple:
+    path:      /manage_videos_update_simple
+    defaults:  { _controller: UPONDOrthophonieBundle:RessourcesManager:videosEditUpdateSimple }
 
