@@ -66,7 +66,7 @@
                         <div id="iscorrect{{ multimedia.getNom }}" class="col-xs-12 bottom text-center">
                             <div class="col-xs-12 col-sm-12 emphasis">
                                 <div class="col-sm-12">
-                                    <a href="#" class="btn btn-primary reccorder" id="" name="{{ multimedia.getNom }}">Démarrer l'enregistrement </a>
+                                    <a href="#" class="btn btn-primary reccorder" id="btn{{ multimedia.getNom }}" name="{{ multimedia.getNom }}">Démarrer l'enregistrement </a>
                                     <input type="hidden" name="confidence" id="confidence{{ multimedia.getNom }}" value="0.85"/>
                                     <input type="hidden" id="word{{ multimedia.getNom }}" value="{{ multimedia.getNom }}"/>
 
@@ -222,7 +222,7 @@
                 var nomPersonne = $('#word'+name).val();
                 wsRecognition.start();
                 $('#result'+name).text();
-                $(this).removeClass('btn-primary').html('Enregistrement en cours...');
+                $('#btn'+name).removeClass('btn-primary').addClass('btn-default').html('Enregistrement en cours...');
 
                 wsRecognition.onresult = function (event) {
                     console.log(event);
@@ -258,7 +258,7 @@
                             }else{
                                 console.log("Bad");
                             }
-                            $(this).addClass('btn-primary').html('Démarrer l\'enregistrement');
+                            $('#btn'+name).addClass('btn-primary').html('Démarrer l\'enregistrement');
                             $('#result'+name).text(transcript);
 
                         }else{
