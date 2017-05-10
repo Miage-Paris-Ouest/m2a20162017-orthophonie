@@ -47,22 +47,35 @@
                         </div>
 
 
-                            {% if afficherSon == true %}
-                                <div class="col-xs-12 bottom text-center">
-                                    <div class="col-xs-12 col-sm-12 emphasis">
-                                        <!--<audio controls style="width: 100%">
-                                            <source src="" type="audio/mpeg">
-                                                    Votre navigateur internet ne supporte pas l'élément audio.
-                                        </audio>-->
-                                        {% if TypePhase == "Apprentissage" %}
-                                        <button class="helper btn btn-info" type="button" title="{{ multimedia.getIndiceApprentissage }}" >Indice</button>
-                                        {% elseif TypePhase == "Entrainement" %}
-                                        <button class="helper btn btn-info" type="button" title="{{ multimedia.getIndiceEntrainement }}">Indice</button>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endif %}
+                    {% if afficherSon == true %}
+                        <div class="col-xs-12 bottom text-center">
+                            <div class="col-xs-12 col-sm-12 emphasis">
+                                <!--<audio controls style="width: 100%">
+                                    <source src="" type="audio/mpeg">
+                                            Votre navigateur internet ne supporte pas l'élément audio.
+                                </audio>-->
+                                {% if TypePhase == "Apprentissage" %}
+                                <button class="helper btn btn-info" type="button" title="{{ multimedia.getIndiceApprentissage }}" >Indice</button>
+                                {% elseif TypePhase == "Entrainement" %}
+                                <button class="helper btn btn-info" type="button" title="{{ multimedia.getIndiceEntrainement }}">Indice</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if TypeAffichage == "Exercice" %}
+                        <div id="iscorrect{{ multimedia.getNom }}" class="col-xs-12 bottom text-center">
+                            <div class="col-xs-12 col-sm-12 emphasis">
+                                <div class="col-sm-12">
+                                    <a href="#" class="btn btn-primary reccorder" id="" name="{{ multimedia.getNom }}">Démarrer l'enregistrement </a>
+                                    <input type="hidden" name="confidence" id="confidence{{ multimedia.getNom }}" value="0.85"/>
+                                    <input type="hidden" id="word{{ multimedia.getNom }}" value="{{ multimedia.getNom }}"/>
 
+                                    <label>Votre réponse : </label>
+                                    <span style="font-size: 30px;" id="result{{ multimedia.getNom }}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
 
                     </div>
                 </div>
@@ -80,10 +93,12 @@
                 {{ form_start(form) }}
                 {{ form_errors(form) }}
                 {% if TypeAffichage == "Nom" %}
-                    <div class="col-sm-2"style="float: left;padding-bottom: 20px">{{ form_row(form.MauvaiseReponse, { 'label': 'Précédent' }) }}</div>
-                    <div class="col-sm-2"style="float: right;padding-bottom: 20px"> {{ form_row(form.BonneReponse, { 'label': 'Suivant' }) }} </div>
+                    <div class="col-sm-2" style="float: left;padding-bottom: 20px">{{ form_row(form.MauvaiseReponse, { 'label': 'Précédent' }) }}</div>
+                    <div class="col-sm-2" style="float: right;padding-bottom: 20px"> {{ form_row(form.BonneReponse, { 'label': 'Suivant' }) }} </div>
                 {% else %}
-                    <div class="col-sm-2"style="float: left;padding-bottom: 20px">{{ form_row(form.MauvaiseReponse, { 'label': 'Mauvaise réponse' }) }}</div>
+                    <div class="col-sm-2" style="float: left;padding-bottom: 20px">{{ form_row(form.MauvaiseReponse, { 'label': 'Mauvaise réponse' }) }}</div>
+
+
                     <div class="col-sm-2" style="float: right;padding-bottom: 20px">{{ form_row(form.BonneReponse, { 'label': 'Bonne réponse' }) }}</div>
                 {% endif %}
                 {{ form_end(form) }}
@@ -152,7 +167,6 @@
         console.log('countdown360 ',countdown);
     </script>
 <script type="text/javascript">
-
     function checkCompatibilty () {
         if(!('speechSynthesis' in window)){
             alert('Your browser is not supported. If google chrome, please upgrade!!');
@@ -194,6 +208,72 @@
         msg.text = $(this).attr("title");
         window.speechSynthesis.speak(msg);
     });
+
+    (function($){
+        if ('webkitSpeechRecognition' in window) {
+            var wsRecognition = new webkitSpeechRecognition();
+            wsRecognition.lang = "fr-FR";
+            wsRecognition.continuous = false;
+            wsRecognition.interimResults = true;
+
+            $('.reccorder').click(function(){
+                var name = $(this).attr( 'name' );
+                console.log(name);
+                var nomPersonne = $('#word'+name).val();
+                wsRecognition.start();
+                $('#result'+name).text();
+                $(this).removeClass('btn-primary').html('Enregistrement en cours...');
+
+                wsRecognition.onresult = function (event) {
+                    console.log(event);
+                    $('#result'+name).text('');
+
+                    for (var i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            wsRecognition.stop();
+                            var transcript = event.results[i][0].transcript;
+                            var confidence = event.results[i][0].confidence;
+                            var param = $('#confidence'+name).val();
+                            console.log('Confidence: ' + event.results[0][0].confidence);
+                            console.log(transcript);
+                            console.log(param);
+
+                            //var words = transcript.split(' ');
+                            var words = transcript;
+                            console.log(nomPersonne);
+
+
+                            if(words.toLowerCase() == nomPersonne.toLowerCase()){
+                                $('#iscorrect'+name).css( "background-color","#2ecc71" );
+                            }else{
+                                $('#iscorrect'+name).css( "background-color","#e74c3c" );
+                            }
+
+
+                            if(confidence >= param){
+                                console.log("Good");
+                            }
+                            else if(confidence > (param-0.10) && confidence < param){
+                                console.log("Not sure");
+                            }else{
+                                console.log("Bad");
+                            }
+                            $(this).addClass('btn-primary').html('Démarrer l\'enregistrement');
+                            $('#result'+name).text(transcript);
+
+                        }else{
+                            $('#result'+name).text($('#result'+name).text() + event.results[i][0].transcript);
+                        }
+                    }
+                };
+            });
+
+
+
+        }
+
+
+    })(jQuery);
 
 </script>
 
