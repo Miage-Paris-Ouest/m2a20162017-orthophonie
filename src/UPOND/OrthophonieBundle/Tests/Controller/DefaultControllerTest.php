@@ -8,10 +8,13 @@ class DefaultControllerTest extends WebTestCase
 {
     public function testIndex()
     {
-        $client = static::createClient();
+    $client = static::createClient();
 
         $crawler = $client->request('GET', '/');
 
-        //$this->assertContains('Hello World', $client->getResponse()->getContent());
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("Login")')->count()
+        );
     }
 }
