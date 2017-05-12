@@ -19,7 +19,7 @@ before_install:
   
 script:
   - phpunit
-  - atoum --test-all
+  - bin/atoum --test-all
 
 deploy:
   provider: heroku
