@@ -73,13 +73,23 @@
                 <hr>
 
                 <h3>Son</h3>
-
+                <h5>Apprentissage</h5>
                 <div>
                 {% if action == 'Update' %}
-                    <input class="form-control" type="text" name="audio" value="{{ obj_multimedia.getIndiceApprentissage }}" />
+                    <input class="form-control" type="text" name="apprentissage" value="{{ obj_multimedia.getIndiceApprentissage }}" />
                 {% else %}
-                    <input class="form-control" type="text" name="audio" value="" />
+                    <input class="form-control" type="text" name="apprentissage" value="" />
                 {% endif %}
+                    <button class="helper btn btn-info" type="button" title="" >Tester <i class="fa fa-play"></i></button>
+                </div>
+                <h5>Entrainement</h5>
+
+                <div>
+                    {% if action == 'Update' %}
+                        <input class="form-control" type="text" name="entrainement" value="{{ obj_multimedia.getIndiceEntrainement }}" />
+                    {% else %}
+                        <input class="form-control" type="text" name="entrainement" value="" />
+                    {% endif %}
                     <button class="helper btn btn-info" type="button" title="" >Tester <i class="fa fa-play"></i></button>
                 </div>
 
