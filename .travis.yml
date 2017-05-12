@@ -19,6 +19,7 @@ before_install:
   
 script:
   - phpunit
+  - phpunit --coverage-text
 
 deploy:
   provider: heroku
