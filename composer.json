@@ -35,8 +35,8 @@
         "knplabs/knp-menu-bundle": "dev-master",
         "stof/doctrine-extensions-bundle": "~1.1",
         "symfony/assetic-bundle": "^2.8",
-        "friendsofsymfony/jsrouting-bundle": "^1.6",
-	    "atoum/atoum"
+        "friendsofsymfony/jsrouting-bundle": "^1.6"
+	    
 
     },
     "require-dev": {
