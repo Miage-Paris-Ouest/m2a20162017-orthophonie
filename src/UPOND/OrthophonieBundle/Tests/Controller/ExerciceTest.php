@@ -1,7 +1,7 @@
 <?php
 namespace UPOND\OrthophonieBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\TestCase;
-use OrthophonieBundle/Entity/Exercice;
+use OrthophonieBundle\Entity\Exercice;
 
 class DefaultControllerTest extends TestCase{
     public function setUp(){
