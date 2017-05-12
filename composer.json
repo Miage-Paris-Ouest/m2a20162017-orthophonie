@@ -61,6 +61,15 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ]
     },
+	 "autoload": {
+        "psr-0": {
+            "atoum\\AtoumBundle": ""
+        }
+    },
+    "target-dir": "atoum/AtoumBundle",
+    "config": {
+        "bin-dir": "bin"
+    },
     "extra": {
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
