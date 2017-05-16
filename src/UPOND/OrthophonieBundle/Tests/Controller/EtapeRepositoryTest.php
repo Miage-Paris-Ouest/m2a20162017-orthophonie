@@ -25,7 +25,7 @@ class ProductRepositoryTest extends KernelTestCase
     public function testSearchByCategoryName()
     {
         $products = $this->em
-            ->getRepository('AppBundle:utilisateur')
+            ->getRepository('OrthophonieBundle:utilisateur')
             ->searchByCategoryName('email')
         ;
 
