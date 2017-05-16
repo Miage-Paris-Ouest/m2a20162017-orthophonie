@@ -1,6 +1,4 @@
-namespace Tests\AppBundle\Repository;
-
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+namespace UPOND\OrthophonieBundle\Tests\Controller;
 
 class ProductRepositoryTest extends KernelTestCase
 {
