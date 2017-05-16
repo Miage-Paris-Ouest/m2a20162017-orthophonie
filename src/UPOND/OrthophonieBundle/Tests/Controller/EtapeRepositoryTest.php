@@ -1,3 +1,4 @@
+<?php
 namespace UPOND\OrthophonieBundle\Tests\Controller;
 
 class ProductRepositoryTest extends KernelTestCase
