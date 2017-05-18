@@ -33,8 +33,8 @@ class EtapeRepositoryTest extends KernelTestCase
     public function testSearchByCategoryName()
     {
         $products = $this->em
-            ->getRepository('UPONDOrthophonieBundle:Exercice')
-            ->searchByCategoryName('et.idEtape');
+            ->getRepository('UPONDOrthophonieBundle:Etape')
+            ->findby(array('idEtape' => 1));
 
         $this->assertCount(1, $products);
     }
