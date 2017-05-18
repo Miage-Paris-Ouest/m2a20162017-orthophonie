@@ -19,7 +19,7 @@ class PatientTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function setUtilisateur(\UPOND\OrthophonieBundle\Entity\Utilisateur $utilisateur = null)
+    public function testsetUtilisateur(\UPOND\OrthophonieBundle\Entity\Utilisateur $utilisateur = null)
     {
         $utilisateur = new Utilisateur();
         $patient = new Patient();

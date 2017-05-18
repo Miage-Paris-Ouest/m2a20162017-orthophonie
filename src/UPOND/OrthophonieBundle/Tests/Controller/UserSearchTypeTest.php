@@ -3,28 +3,24 @@
  * Created by PhpStorm.
  * User: laurentmourer
  * Date: 18/05/2017
- * Time: 16:24
+ * Time: 18:55
  */
 
 namespace UPOND\OrthophonieBundle\Form;
 
-use UPOND\OrthophonieBundle\Entity\Utilisateur;
-use UPOND\OrthophonieBundle\Form\NewUtilisateurForm;
 
-use Symfony\Component\Form\Test\TypeTestCase;
-
-
-class NewUtilisateurFormTest extends TypeTestCase
+class UserSearchTypeTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testSubmitValidData()
     {
         $formData = array(
-            'login' => 'mktotoy',
-            'password' => 'toto',
+            'nom' => 'mourer',
+            'prenom' => 'laurent',
+            'Lancer la recherche' => 'toto',
         );
 
-        $form = $this->factory->create(NewUtilisateurForm::class);
+
+        $form = $this->factory->create(UserSearchType::class);
 
 
         // submit the data to the form directly

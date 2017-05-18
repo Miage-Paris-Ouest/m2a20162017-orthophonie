@@ -11,10 +11,10 @@ namespace UPOND\OrthophonieBundle\Entity;
 
 class PartieTest extends \PHPUnit_Framework_TestCase
 {
-    public function setPatient(\UPOND\OrthophonieBundle\Entity\Patient $patient = null)
+    public function testsetPatient()
     {
         $patient = new Patient();
-        $partieTest = new PartieTest();
+        $partieTest = new Partie();
         $partieTest->setPatient($patient);
         $this->assertEquals($patient, $partieTest->getPatient());
 
@@ -23,9 +23,9 @@ class PartieTest extends \PHPUnit_Framework_TestCase
 
 
 
-    public function setDateCreation($dateCreation)
+    public function testsetDateCreation()
     {
-        $partieTest = new PartieTest();
+        $partieTest = new Partie();
         $partieTest->setDateCreation("11/11/11");
         $this->assertEquals("11/11/11", $partieTest->getDateCreation());
 
