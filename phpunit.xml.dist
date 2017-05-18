@@ -16,6 +16,8 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>src/UPOND/OrthophonieBundle/Tests/Controller</directory>
+            <directory>src/UPOND/OrthophonieBundle/Tests/Entity</directory>
+
         </testsuite>
     </testsuites>
 
